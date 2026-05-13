@@ -391,10 +391,21 @@ def cmd_status(args) -> None:
     config = load_config()
     mem_config = config.get("memory", {})
     provider_name = mem_config.get("provider", "")
+    plural_provider_names = mem_config.get("providers") or []
 
     print(f"\nMemory status\n" + "─" * 40)
     print(f"  Built-in:  always active")
     print(f"  Provider:  {provider_name or '(none — built-in only)'}")
+    if plural_provider_names:
+        listed = ", ".join(str(p) for p in plural_provider_names)
+        print(f"  Providers: {listed}")
+        if provider_name:
+            print(
+                "  Warning:   memory.providers is active and overrides "
+                f"memory.provider ({provider_name})."
+            )
+        else:
+            print("  Status:    memory.providers is active")
 
     if provider_name:
         provider_config = mem_config.get(provider_name, {})

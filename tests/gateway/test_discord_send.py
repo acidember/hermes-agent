@@ -123,6 +123,39 @@ async def test_send_retries_without_reference_when_reply_target_is_deleted():
 
 
 @pytest.mark.asyncio
+async def test_send_retries_transient_discord_503(monkeypatch):
+    """Discord 5xx/overflow blips should retry briefly instead of dropping the reply."""
+    adapter = DiscordAdapter(PlatformConfig(enabled=True, token="***"))
+    monkeypatch.setattr("gateway.platforms.discord.asyncio.sleep", AsyncMock())
+
+    calls = []
+
+    async def fake_send(*, content, reference=None):
+        calls.append({"content": content, "reference": reference})
+        if len(calls) == 1:
+            raise RuntimeError(
+                "503 Service Unavailable (error code: 0): upstream connect error "
+                "or disconnect/reset before headers. reset reason: overflow"
+            )
+        return SimpleNamespace(id=777)
+
+    channel = SimpleNamespace(
+        fetch_message=AsyncMock(),
+        send=AsyncMock(side_effect=fake_send),
+    )
+    adapter._client = SimpleNamespace(
+        get_channel=lambda _chat_id: channel,
+        fetch_channel=AsyncMock(),
+    )
+
+    result = await adapter.send("555", "hello")
+
+    assert result.success is True
+    assert result.message_id == "777"
+    assert channel.send.await_count == 2
+
+
+@pytest.mark.asyncio
 async def test_send_does_not_retry_on_unrelated_errors():
     """Regression guard: errors unrelated to the reply reference (e.g. 50013
     Missing Permissions) must NOT trigger the no-reference retry path — they

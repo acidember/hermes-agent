@@ -45,9 +45,39 @@ class TestGuidanceConstants:
         assert "like a diary" not in MEMORY_GUIDANCE
         assert ">80%" not in MEMORY_GUIDANCE
 
-    def test_session_search_guidance_is_simple_cross_session_recall(self):
-        assert "relevant cross-session context exists" in SESSION_SEARCH_GUIDANCE
+    def test_session_search_guidance_routes_retrieval_surfaces(self):
+        assert "retrieval surface" in SESSION_SEARCH_GUIDANCE
+        assert "use tools before guessing" in SESSION_SEARCH_GUIDANCE
+        assert "Fabric" in SESSION_SEARCH_GUIDANCE
+        assert "session_search" in SESSION_SEARCH_GUIDANCE
+        assert "mempalace" in SESSION_SEARCH_GUIDANCE
+        assert "ChatGPT/OpenClaw/Kai voice" in SESSION_SEARCH_GUIDANCE
+        assert "skills" in SESSION_SEARCH_GUIDANCE
+        assert "web/current" in SESSION_SEARCH_GUIDANCE
+        assert "terminal/read_file/search_files" in SESSION_SEARCH_GUIDANCE
+        assert "durable user/profile memory" in SESSION_SEARCH_GUIDANCE
+        assert "Enzyme/Honcho/Holographic" in SESSION_SEARCH_GUIDANCE
+        assert "intimate/presence" in SESSION_SEARCH_GUIDANCE
+        assert "do not mention memory/retrieval machinery" in SESSION_SEARCH_GUIDANCE
         assert "recent turns of the current session" not in SESSION_SEARCH_GUIDANCE
+
+    def test_session_search_guidance_keeps_provenance_invisible_in_presence(self):
+        guidance = SESSION_SEARCH_GUIDANCE.lower()
+
+        assert "ordinary or intimate/presence turns" in guidance
+        assert "retrieve if needed" in guidance
+        assert "answer cleanly" in guidance
+        assert "do not mention memory/retrieval machinery" in guidance
+        assert "unless the user asks for memory/debug" in guidance
+
+    def test_session_search_guidance_blocks_raw_headers_and_negative_space(self):
+        guidance = SESSION_SEARCH_GUIDANCE.lower()
+
+        assert "retrieval headers" in guidance
+        assert "narrate negative space" in guidance
+        assert "unless the user asks for memory/debug" in guidance
+        assert "print raw" not in guidance
+        assert "surface provenance" not in guidance
 
 
 # =========================================================================

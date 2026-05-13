@@ -203,8 +203,11 @@ class HonchoMemoryProvider(MemoryProvider):
         # B1: recall_mode — set during initialize from config
         self._recall_mode = "hybrid"  # "context", "tools", or "hybrid"
 
-        # Base context cache — refreshed on context_cadence, not frozen
+        # Base context cache — refreshed on context_cadence, not frozen.
+        # Keep the raw ctx dict so query-aware sanitization can reformat it
+        # differently as the live conversation changes.
         self._base_context_cache: Optional[str] = None
+        self._base_context_raw_cache: Optional[dict] = None
         self._base_context_lock = threading.Lock()
 
         # B5: Cost-awareness turn counting and cadence
@@ -289,8 +292,7 @@ class HonchoMemoryProvider(MemoryProvider):
                 self._cron_skipped = True
                 return
 
-            from plugins.memory.honcho.client import HonchoClientConfig, get_honcho_client
-            from plugins.memory.honcho.session import HonchoSessionManager
+            from plugins.memory.honcho.client import HonchoClientConfig
 
             cfg = HonchoClientConfig.from_global_config()
             if not cfg.enabled or not (cfg.api_key or cfg.base_url):
@@ -465,7 +467,124 @@ class HonchoMemoryProvider(MemoryProvider):
             logger.warning("Honcho lazy session init failed: %s", e)
             return False
 
-    def _format_first_turn_context(self, ctx: dict) -> str:
+    _DATED_OBSERVATION_RE = re.compile(r"^\s*\[\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2}:\d{2})?\]\s+")
+    _PLATFORM_ID_RE = re.compile(r"\b\d{10,19}\b")
+    _RAW_CONTEXT_MARKERS = (
+        "<prior_memory_file>",
+        "</prior_memory_file>",
+        "toolresult",
+        "tool output",
+        "action items",
+        "<!-- peer_id:",
+        "session ",
+        "cron",
+    )
+    _OBSERVATION_HEADING_RE = re.compile(r"^##\s+(?:Explicit|Deductive|Inductive) Observations\s*$", re.IGNORECASE)
+    _OBSERVATION_META_RE = re.compile(r"^\*\*(?:Type|Sources)\*\*:\s*", re.IGNORECASE)
+    _STRUCTURED_CONTEXT_RE = re.compile(
+        r"^("
+        r"\*\*Pattern\*\*\s+\[[^\]]+\]:|"
+        r"(?:TRAIT|PREFERENCE):\s+|"
+        r"Stable preference:\s+|Name:\s+|\w+\s+is\s+a\s+|"
+        r"Identifies as\s+|Also known as\s+|Wears\s+|Owns\s+|Has large eyes\b"
+        r")",
+        re.IGNORECASE,
+    )
+    _EXPLICIT_STRUCTURED_CONTEXT_RE = re.compile(
+        r"^(?:Ember|Kai|User)\s+"
+        r"(?:prefers|rejects|wants|does not want|doesn't want|likes|dislikes|needs|asks|expects)\b",
+        re.IGNORECASE,
+    )
+    _EXPLICIT_BODY_TERMS = re.compile(
+        r"\b("
+        r"topless|naked|nudity|exhibitionism|cock|dick|penis|ass|butt|breast|boob|pussy|clit|cum|orgasm|"
+        r"sexual encounter|sexual activity|intimate encounter|intimate encounters|moan|moaning|slurp|slurping"
+        r")\b",
+        re.IGNORECASE,
+    )
+    _EXPLICIT_CONTEXT_TERMS = re.compile(
+        r"\b(sex|sexual|smex|explicit|erotic|intimacy|intimate|anatomical|body language|naked|cock|dick|penis|ass|pussy|clit)\b",
+        re.IGNORECASE,
+    )
+
+    def _query_invokes_explicit_context(self, query: str | None) -> bool:
+        """Return True when the live user turn asks for the explicit/body layer."""
+        return bool(query and self._EXPLICIT_CONTEXT_TERMS.search(query))
+
+    def _sanitize_injected_representation(self, rep: str, query: str | None = None) -> str:
+        """Clean Honcho peer representation before automatic injection.
+
+        Raw Honcho representations can contain dated observation rows and
+        platform IDs. Those rows are useful for audit/history reconstruction,
+        but they are the wrong abstraction level for live conversational
+        context. This gate drops surveillance-shaped rows while preserving
+        stable preferences, including explicit/anatomical language when the
+        current turn invokes that layer.
+        """
+        if not rep:
+            return ""
+
+        explicit_context = self._query_invokes_explicit_context(query)
+        kept: list[str] = []
+        skipping_sources = False
+        in_code_block = False
+        for raw_line in rep.splitlines():
+            line = raw_line.strip()
+            if line.startswith("```"):
+                in_code_block = not in_code_block
+                continue
+            if in_code_block:
+                continue
+            if not line:
+                skipping_sources = False
+                if kept and kept[-1] != "":
+                    kept.append("")
+                continue
+
+            lowered = line.lower()
+            if skipping_sources and line.startswith("-"):
+                continue
+            if skipping_sources:
+                skipping_sources = False
+            if self._OBSERVATION_HEADING_RE.match(line):
+                continue
+            if line == "## Explicit Observations":
+                continue
+            if self._DATED_OBSERVATION_RE.match(line):
+                continue
+            if any(marker in lowered for marker in self._RAW_CONTEXT_MARKERS):
+                continue
+            if self._OBSERVATION_META_RE.match(line):
+                if lowered.startswith("**sources**"):
+                    skipping_sources = True
+                continue
+            if self._PLATFORM_ID_RE.search(line):
+                # Platform IDs belong in diagnostics, not live memory context.
+                continue
+            structured = bool(self._STRUCTURED_CONTEXT_RE.match(line))
+            explicit_structured = explicit_context and bool(self._EXPLICIT_STRUCTURED_CONTEXT_RE.match(line))
+            if not structured and not explicit_structured:
+                # Automatic injection should be compact user-model facts, not
+                # transcript prose, code snippets, instructions, or diary chunks.
+                # Explicit turns may include anatomy-level continuity, but only
+                # from preference-shaped facts — never arbitrary Honcho prose.
+                continue
+            if not explicit_context and self._EXPLICIT_BODY_TERMS.search(line):
+                continue
+
+            kept.append(line)
+
+        # Collapse repeated blank lines and trim edges.
+        compact: list[str] = []
+        for line in kept:
+            if line == "" and (not compact or compact[-1] == ""):
+                continue
+            compact.append(line)
+        while compact and compact[-1] == "":
+            compact.pop()
+        return "\n".join(compact)
+
+    def _format_first_turn_context(self, ctx: dict, query: str | None = None) -> str:
         """Format the prefetch context dict into a readable system prompt block."""
         parts = []
 
@@ -474,19 +593,19 @@ class HonchoMemoryProvider(MemoryProvider):
         if summary:
             parts.append(f"## Session Summary\n{summary}")
 
-        rep = ctx.get("representation", "")
+        rep = self._sanitize_injected_representation(ctx.get("representation", ""), query=query)
         if rep:
             parts.append(f"## User Representation\n{rep}")
 
-        card = ctx.get("card", "")
+        card = self._sanitize_injected_representation(ctx.get("card", ""), query=query)
         if card:
             parts.append(f"## User Peer Card\n{card}")
 
-        ai_rep = ctx.get("ai_representation", "")
+        ai_rep = self._sanitize_injected_representation(ctx.get("ai_representation", ""), query=query)
         if ai_rep:
             parts.append(f"## AI Self-Representation\n{ai_rep}")
 
-        ai_card = ctx.get("ai_card", "")
+        ai_card = self._sanitize_injected_representation(ctx.get("ai_card", ""), query=query)
         if ai_card:
             parts.append(f"## AI Identity Card\n{ai_card}")
 
@@ -577,24 +696,30 @@ class HonchoMemoryProvider(MemoryProvider):
         # On first call, fetch synchronously so turn 1 isn't empty.
         # After that, serve from cache and refresh in background on cadence.
         with self._base_context_lock:
-            if self._base_context_cache is None:
+            if self._base_context_raw_cache is None:
                 # First call — synchronous fetch
                 try:
                     ctx = self._manager.get_prefetch_context(self._session_key)
-                    self._base_context_cache = self._format_first_turn_context(ctx) if ctx else ""
+                    self._base_context_raw_cache = ctx if ctx else {}
+                    self._base_context_cache = self._format_first_turn_context(ctx, query=query) if ctx else ""
                     self._last_context_turn = self._turn_count
                 except Exception as e:
                     logger.debug("Honcho base context fetch failed: %s", e)
+                    self._base_context_raw_cache = {}
                     self._base_context_cache = ""
-            base_context = self._base_context_cache
+            base_context = (
+                self._format_first_turn_context(self._base_context_raw_cache, query=query)
+                if self._base_context_raw_cache else self._base_context_cache
+            )
 
         # Check if background context prefetch has a fresher result
         if self._manager:
             fresh_ctx = self._manager.pop_context_result(self._session_key)
             if fresh_ctx:
-                formatted = self._format_first_turn_context(fresh_ctx)
+                formatted = self._format_first_turn_context(fresh_ctx, query=query)
                 if formatted:
                     with self._base_context_lock:
+                        self._base_context_raw_cache = fresh_ctx
                         self._base_context_cache = formatted
                     base_context = formatted
 

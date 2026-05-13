@@ -142,6 +142,17 @@ class TestChildSystemPrompt(unittest.TestCase):
         prompt = _build_child_system_prompt("Do something", "  ")
         self.assertNotIn("CONTEXT", prompt)
 
+    def test_persona_anti_drift_constraints_are_live_requirements(self):
+        prompt = _build_child_system_prompt(
+            "Inspect persistence",
+            "Preserve Kai voice and anti-drift constraints.",
+        )
+
+        self.assertIn("persona, anti-drift, voice", prompt)
+        self.assertIn("live operating requirements", prompt)
+        self.assertIn("rather than flavor text", prompt)
+        self.assertIn("generic assistant defaults", prompt)
+
 
 class TestStripBlockedTools(unittest.TestCase):
     def test_removes_blocked_toolsets(self):

@@ -188,16 +188,19 @@ def build_memory_context_block(raw_context: str) -> str:
 
 
 class MemoryManager:
-    """Orchestrates the built-in provider plus at most one external provider.
+    """Orchestrates memory providers for the agent.
 
-    The builtin provider is always first. Only one non-builtin (external)
-    provider is allowed.  Failures in one provider never block the other.
+    The builtin provider is always first. By default only one non-builtin
+    (external) provider is allowed. Plural ``memory.providers`` runtime
+    activation can opt into multiple external providers explicitly.
+    Failures in one provider never block the other.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *, allow_multiple_external: bool = False) -> None:
         self._providers: List[MemoryProvider] = []
         self._tool_to_provider: Dict[str, MemoryProvider] = {}
         self._has_external: bool = False  # True once a non-builtin provider is added
+        self._allow_multiple_external = allow_multiple_external
 
     # -- Registration --------------------------------------------------------
 
@@ -211,15 +214,16 @@ class MemoryManager:
         is_builtin = provider.name == "builtin"
 
         if not is_builtin:
-            if self._has_external:
+            if self._has_external and not self._allow_multiple_external:
                 existing = next(
                     (p.name for p in self._providers if p.name != "builtin"), "unknown"
                 )
                 logger.warning(
                     "Rejected memory provider '%s' — external provider '%s' is "
                     "already registered. Only one external memory provider is "
-                    "allowed at a time. Configure which one via memory.provider "
-                    "in config.yaml.",
+                    "allowed at a time unless allow_multiple_external=True. "
+                    "Configure one provider via memory.provider or opt into "
+                    "multiple providers via memory.providers in config.yaml.",
                     provider.name, existing,
                 )
                 return

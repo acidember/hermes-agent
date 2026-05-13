@@ -851,6 +851,9 @@ If no outstanding task exists, write "None."]
 ## Constraints & Preferences
 [User preferences, coding style, constraints, important decisions]
 
+## Identity / Behavior Invariants
+[Durable operating constraints that must survive compaction when present: persona rules, anti-drift corrections, relationship/voice constraints, safety-shape constraints, or other behavior invariants the next assistant must preserve. Keep these short, explicit, and actionable.]
+
 ## Completed Actions
 [Numbered list of concrete actions taken — include tool used, target, and outcome.
 Format each as: N. ACTION target — outcome [tool: name]
@@ -908,7 +911,7 @@ PREVIOUS SUMMARY:
 NEW TURNS TO INCORPORATE:
 {content_to_summarize}
 
-Update the summary using this exact structure. PRESERVE all existing information that is still relevant. ADD new completed actions to the numbered list (continue numbering). Move items from "In Progress" to "Completed Actions" when done. Move answered questions to "Resolved Questions". Update "Active State" to reflect current state. Remove information only if it is clearly obsolete. CRITICAL: Update "## Active Task" to reflect the user's most recent unfulfilled request — this is the most important field for task continuity.
+Update the summary using this exact structure. PRESERVE all existing information that is still relevant. ADD new completed actions to the numbered list (continue numbering). Move items from "In Progress" to "Completed Actions" when done. Move answered questions to "Resolved Questions". Update "Active State" to reflect current state. Remove information only if it is clearly obsolete. CRITICAL: Update "## Active Task" to reflect the user's most recent unfulfilled request — this is the most important field for task continuity. ALSO preserve durable identity/behavior invariants when the conversation contains anti-drift, persona, voice, or relationship-shape corrections.
 
 {_template_sections}"""
         else:

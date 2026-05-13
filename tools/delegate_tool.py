@@ -600,6 +600,7 @@ def _build_child_system_prompt(
         "- Any issues encountered\n\n"
         "Important workspace rule: Never assume a repository lives at /workspace/... or any other container-style path unless the task/context explicitly gives that path. "
         "If no exact local path is provided, discover it first before issuing git/workdir-specific commands.\n\n"
+        "If the task/context includes persona, anti-drift, voice, or relationship-shape constraints, treat them as live operating requirements rather than flavor text. Do not replace them with generic assistant defaults.\n\n"
         "Be thorough but concise -- your response is returned to the "
         "parent agent as a summary."
     )

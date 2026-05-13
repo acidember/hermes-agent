@@ -162,6 +162,15 @@ class TestMemoryManager:
         assert [p.name for p in mgr.providers] == ["builtin", "mem0"]
         assert len(mgr.providers) == 2
 
+    def test_multiple_external_allowed_when_explicitly_enabled(self):
+        """Plural memory.providers can opt into multiple external providers."""
+        mgr = MemoryManager(allow_multiple_external=True)
+        ext1 = FakeMemoryProvider("enzyme")
+        ext2 = FakeMemoryProvider("holographic")
+        mgr.add_provider(ext1)
+        mgr.add_provider(ext2)
+        assert [p.name for p in mgr.providers] == ["enzyme", "holographic"]
+
     def test_system_prompt_merges_blocks(self):
         mgr = MemoryManager()
         p1 = FakeMemoryProvider("builtin")

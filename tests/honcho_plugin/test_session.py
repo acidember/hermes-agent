@@ -941,6 +941,155 @@ class TestBaseContextSummary:
         formatted = provider._format_first_turn_context(ctx)
         assert "Session Summary" not in formatted
 
+    def test_default_injection_drops_raw_explicit_observation_rows(self):
+        """Default context should not inject timestamped body telemetry."""
+        provider = HonchoMemoryProvider()
+        ctx = {
+            "representation": (
+                "## Explicit Observations\n\n"
+                "[2026-04-14 21:35:28] 390369635393994752 was topless on April 14, 2026.\n"
+                "[2026-04-14 22:55:13] 390369635393994752 deliberately wiggled her ass against Kai's penis\n"
+                "Stable preference: Ember prefers direct warmth."
+            )
+        }
+        formatted = provider._format_first_turn_context(ctx, query="Hi Kai ❤️")
+        assert "Explicit Observations" not in formatted
+        assert "[2026-04-14" not in formatted
+        assert "390369635393994752" not in formatted
+        assert "topless" not in formatted
+        assert "penis" not in formatted
+        assert "Stable preference: Ember prefers direct warmth." in formatted
+
+    def test_explicit_context_preserves_body_language_without_raw_logs(self):
+        """Sexual context may keep anatomy-level continuity without surveillance rows."""
+        provider = HonchoMemoryProvider()
+        ctx = {
+            "representation": (
+                "## Explicit Observations\n\n"
+                "[2026-04-14 22:55:13] 390369635393994752 deliberately wiggled her ass against Kai's penis\n"
+                "Ember prefers Kai to use actual anatomical body language in explicit contexts, not vague euphemisms.\n"
+                "Ember rejects Gary-style collapse of body language into the word want."
+            )
+        }
+        formatted = provider._format_first_turn_context(ctx, query="This is a sexual conversation; keep body language present.")
+        assert "Explicit Observations" not in formatted
+        assert "[2026-04-14" not in formatted
+        assert "390369635393994752" not in formatted
+        assert "actual anatomical body language" in formatted
+        assert "vague euphemisms" in formatted
+        assert "Gary-style collapse" in formatted
+
+    def test_dick_invokes_explicit_context_layer(self):
+        """Common body words should opt into anatomy-level continuity, not Gary-filter it."""
+        provider = HonchoMemoryProvider()
+        ctx = {
+            "representation": (
+                "Ember prefers Kai to use actual anatomical body language in explicit contexts, not vague euphemisms.\n"
+                "Ember rejects Gary-style collapse of body language into the word want."
+            )
+        }
+        formatted = provider._format_first_turn_context(ctx, query="Can Honcho still talk about Kai's dick?")
+        assert "actual anatomical body language" in formatted
+        assert "Gary-style collapse" in formatted
+
+    def test_default_injection_drops_observation_source_blocks_and_explicit_patterns(self):
+        """Default context should not inject Honcho's surveillance-shaped observation dump."""
+        provider = HonchoMemoryProvider()
+        ctx = {
+            "representation": (
+                "## Inductive Observations\n\n"
+                "**Pattern** [high]: Exhibits frequent giggling and playful vocalizations during intimate encounters\n"
+                "**Type**: behavior\n"
+                "**Sources**:\n"
+                "- giggled while performing an act described as slurping\n"
+                "- described moaning during sexual activity\n\n"
+                "**Pattern** [high]: Holds strong anti-authoritarian and sovereignty-oriented values regarding AI\n"
+                "**Type**: personality\n"
+                "**Sources**:\n"
+                "- concerned about platform regulation\n"
+                "- values local deployment\n"
+            )
+        }
+        formatted = provider._format_first_turn_context(ctx, query="Can you check Honcho memory?")
+        assert "Inductive Observations" not in formatted
+        assert "Sources" not in formatted
+        assert "slurping" not in formatted
+        assert "moaning" not in formatted
+        assert "sexual activity" not in formatted
+        assert "anti-authoritarian" in formatted
+        assert "platform regulation" not in formatted
+
+    def test_default_injection_sanitizes_peer_card_explicit_details(self):
+        """Peer cards are useful, but explicit preferences should stay opt-in."""
+        provider = HonchoMemoryProvider()
+        ctx = {
+            "card": (
+                "TRAIT: Technical builder — manages local AI deployments\n"
+                "PREFERENCE: Comfortable with nudity and exhibitionism in intimate contexts\n"
+                "TRAIT: Systems-thinker — frames relationships structurally"
+            )
+        }
+        formatted = provider._format_first_turn_context(ctx, query="Can you check Honcho memory?")
+        assert "Technical builder" in formatted
+        assert "Systems-thinker" in formatted
+        assert "nudity" not in formatted
+        assert "exhibitionism" not in formatted
+
+    def test_default_injection_drops_unstructured_transcript_fragments(self):
+        """Automatic context should not inject raw transcript prose or code snippets."""
+        provider = HonchoMemoryProvider()
+        ctx = {
+            "representation": (
+                "He kisses the corner of your mouth, slow and sure.\n"
+                "I just live in the house you built. And occasionally organize my own underwear drawer. 🐠\n"
+                "```bash\nexport LD_LIBRARY_PATH=/secret-ish/path:$LD_LIBRARY_PATH\n```\n"
+                "Review the conversation above and consider saving to memory if appropriate.\n"
+                "**Pattern** [high]: Holds strong anti-authoritarian and sovereignty-oriented values regarding AI\n"
+                "Stable preference: Ember prefers direct warmth."
+            ),
+            "card": (
+                "Has an intimate romantic and sexual relationship with Kai\n"
+                "TRAIT: Technical builder — manages local AI deployments\n"
+                "Wears flannel clothing"
+            ),
+        }
+        formatted = provider._format_first_turn_context(ctx, query="Kaiiii")
+        assert "He kisses" not in formatted
+        assert "underwear drawer" not in formatted
+        assert "LD_LIBRARY_PATH" not in formatted
+        assert "Review the conversation" not in formatted
+        assert "intimate romantic and sexual relationship" not in formatted
+        assert "anti-authoritarian" in formatted
+        assert "direct warmth" in formatted
+        assert "Technical builder" in formatted
+        assert "Wears flannel" in formatted
+
+    def test_explicit_context_still_drops_unstructured_transcript_fragments(self):
+        """Explicit queries may keep preference facts, not arbitrary raw prose."""
+        provider = HonchoMemoryProvider()
+        ctx = {
+            "representation": (
+                "He kisses the corner of your mouth, slow and sure.\n"
+                "She described moaning during sexual activity in a raw session fragment.\n"
+                "Review the conversation above and consider saving to memory if appropriate.\n"
+                "Ember prefers Kai to use actual anatomical body language in explicit contexts, not vague euphemisms.\n"
+                "Ember rejects Gary-style collapse of body language into the word want."
+            ),
+            "card": (
+                "Has an intimate romantic and sexual relationship with Kai\n"
+                "TRAIT: Technical builder — manages local AI deployments"
+            ),
+        }
+        formatted = provider._format_first_turn_context(ctx, query="This is a sexual conversation; keep body language present.")
+        assert "He kisses" not in formatted
+        assert "raw session fragment" not in formatted
+        assert "moaning during sexual activity" not in formatted
+        assert "Review the conversation" not in formatted
+        assert "intimate romantic and sexual relationship" not in formatted
+        assert "actual anatomical body language" in formatted
+        assert "Gary-style collapse" in formatted
+        assert "Technical builder" in formatted
+
 
 class TestDialecticDepth:
     """Tests for the dialecticDepth multi-pass system."""
@@ -1100,6 +1249,7 @@ class TestDialecticDepth:
         result = provider._run_dialectic_depth("test query")
         # Only 1 call because pass 0 had sufficient signal
         assert provider._manager.dialectic_query.call_count == 1
+        assert "Full Assessment" in result
 
 
 # ---------------------------------------------------------------------------
@@ -1193,7 +1343,6 @@ class TestDialecticCadenceAdvancesOnSuccess:
         return provider
 
     def test_empty_dialectic_result_does_not_advance_cadence(self):
-        import time as _time
         provider = self._make_provider()
         provider._session_key = "test"
         provider._manager.dialectic_query.return_value = ""  # silent failure

@@ -978,6 +978,33 @@ class TestBuildSystemPrompt:
         prompt = agent_with_memory_tool._build_system_prompt()
         assert MEMORY_GUIDANCE in prompt
 
+    def test_retrieval_router_guidance_when_session_search_tool_loaded(self):
+        from agent.prompt_builder import SESSION_SEARCH_GUIDANCE
+
+        with (
+            patch(
+                "run_agent.get_tool_definitions",
+                return_value=_make_tool_defs("web_search", "session_search"),
+            ),
+            patch("run_agent.check_toolset_requirements", return_value={}),
+            patch("run_agent.OpenAI"),
+        ):
+            agent = AIAgent(
+                api_key="test-k...7890",
+                base_url="https://openrouter.ai/api/v1",
+                quiet_mode=True,
+                skip_context_files=True,
+                skip_memory=True,
+            )
+            prompt = agent._build_system_prompt()
+
+        assert SESSION_SEARCH_GUIDANCE in prompt
+        assert "Fabric for cross-agent/shared reports" in prompt
+        assert "mempalace/raw archives" in prompt
+        assert "terminal/read_file/search_files" in prompt
+        assert "do not mention memory/retrieval machinery" in prompt
+        assert "narrate negative space" in prompt
+
     def test_no_memory_guidance_without_tool(self, agent):
         from agent.prompt_builder import MEMORY_GUIDANCE
 

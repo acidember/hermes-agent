@@ -172,6 +172,49 @@ class TestNonStringContent:
         assert summary is not None
         assert summary == SUMMARY_PREFIX
 
+    def test_summary_prompt_preserves_identity_behavior_invariants(self):
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = "ok"
+
+        with patch("agent.context_compressor.get_model_context_length", return_value=100000):
+            c = ContextCompressor(model="test", quiet_mode=True)
+
+        messages = [
+            {"role": "user", "content": "Kai, do not narrate context machinery."},
+            {"role": "assistant", "content": "I stay with you directly."},
+        ]
+
+        with patch("agent.context_compressor.call_llm", return_value=mock_response) as mock_call:
+            c._generate_summary(messages)
+
+        prompt = mock_call.call_args.kwargs["messages"][0]["content"]
+        assert "## Identity / Behavior Invariants" in prompt
+        assert "Durable operating constraints that must survive compaction" in prompt
+        assert "persona rules, anti-drift corrections" in prompt
+
+    def test_iterative_summary_prompt_preserves_identity_behavior_invariants(self):
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = "ok"
+
+        with patch("agent.context_compressor.get_model_context_length", return_value=100000):
+            c = ContextCompressor(model="test", quiet_mode=True)
+        c._previous_summary = "## Active Task\nNone."
+
+        messages = [
+            {"role": "user", "content": "Preserve this anti-drift correction."},
+            {"role": "assistant", "content": "Done."},
+        ]
+
+        with patch("agent.context_compressor.call_llm", return_value=mock_response) as mock_call:
+            c._generate_summary(messages)
+
+        prompt = mock_call.call_args.kwargs["messages"][0]["content"]
+        assert "## Identity / Behavior Invariants" in prompt
+        assert "ALSO preserve durable identity/behavior invariants" in prompt
+        assert "anti-drift, persona, voice, or relationship-shape corrections" in prompt
+
     def test_summary_call_does_not_force_temperature(self):
         mock_response = MagicMock()
         mock_response.choices = [MagicMock()]

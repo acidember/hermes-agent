@@ -1933,20 +1933,43 @@ class AIAgent:
         
 
 
-        # Memory provider plugin (external — one at a time, alongside built-in)
-        # Reads memory.provider from config to select which plugin to activate.
+        # Memory provider plugin(s) (external, alongside built-in memory).
+        # Prefer memory.providers when it is a non-empty list; fall back to the
+        # legacy singular memory.provider. This keeps blank memory.provider as
+        # an opt-out only when no plural list is configured.
         self._memory_manager = None
         if not skip_memory:
             try:
                 _mem_provider_name = mem_config.get("provider", "") if mem_config else ""
+                _mem_provider_names = []
+                _plural_configured = False
+                if mem_config:
+                    _raw_providers = mem_config.get("providers")
+                    if isinstance(_raw_providers, (list, tuple)):
+                        _mem_provider_names = [
+                            str(_p).strip()
+                            for _p in _raw_providers
+                            if str(_p).strip()
+                        ]
+                        _plural_configured = bool(_mem_provider_names)
+                if not _mem_provider_names and _mem_provider_name:
+                    _mem_provider_names = [str(_mem_provider_name).strip()]
 
-                if _mem_provider_name:
+                if _mem_provider_names:
                     from agent.memory_manager import MemoryManager as _MemoryManager
                     from plugins.memory import load_memory_provider as _load_mem
-                    self._memory_manager = _MemoryManager()
-                    _mp = _load_mem(_mem_provider_name)
-                    if _mp and _mp.is_available():
-                        self._memory_manager.add_provider(_mp)
+                    self._memory_manager = _MemoryManager(
+                        allow_multiple_external=_plural_configured
+                    )
+                    for _provider_name in _mem_provider_names:
+                        _mp = _load_mem(_provider_name)
+                        if _mp and _mp.is_available():
+                            self._memory_manager.add_provider(_mp)
+                        else:
+                            logger.debug(
+                                "Memory provider '%s' not found or not available",
+                                _provider_name,
+                            )
                     if self._memory_manager.providers:
                         _init_kwargs = {
                             "session_id": self.session_id,
@@ -1988,9 +2011,15 @@ class AIAgent:
                         except Exception:
                             pass
                         self._memory_manager.initialize_all(**_init_kwargs)
-                        logger.info("Memory provider '%s' activated", _mem_provider_name)
+                        logger.info(
+                            "Memory provider(s) activated: %s",
+                            ", ".join(p.name for p in self._memory_manager.providers),
+                        )
                     else:
-                        logger.debug("Memory provider '%s' not found or not available", _mem_provider_name)
+                        logger.debug(
+                            "No configured memory provider(s) were available: %s",
+                            ", ".join(_mem_provider_names),
+                        )
                         self._memory_manager = None
             except Exception as _mpe:
                 logger.warning("Memory provider plugin init failed: %s", _mpe)

@@ -1319,6 +1319,44 @@ class DiscordAdapter(BasePlatformAdapter):
         """Check if message reactions are enabled via config/env."""
         return os.getenv("DISCORD_REACTIONS", "true").lower() not in {"false", "0", "no"}
 
+    def _is_transient_discord_error(self, exc: Exception) -> bool:
+        """Return True for Discord/CDN/server blips worth retrying briefly."""
+        text = str(exc).lower()
+        return any(
+            marker in text
+            for marker in (
+                "502 bad gateway",
+                "503 service unavailable",
+                "504 gateway timeout",
+                "reset reason: overflow",
+                "upstream connect error",
+                "disconnect/reset before headers",
+            )
+        )
+
+    async def _discord_retry(self, label: str, func: Callable[[], Any], attempts: int = 3) -> Any:
+        """Retry short-lived Discord server failures without hiding permission/config errors."""
+        last_exc: Exception | None = None
+        for attempt in range(1, attempts + 1):
+            try:
+                return await func()
+            except Exception as exc:
+                last_exc = exc
+                if attempt >= attempts or not self._is_transient_discord_error(exc):
+                    raise
+                delay = 0.6 * attempt
+                logger.warning(
+                    "[%s] transient Discord %s failure (%s/%s): %s; retrying in %.1fs",
+                    self.name,
+                    label,
+                    attempt,
+                    attempts,
+                    exc,
+                    delay,
+                )
+                await asyncio.sleep(delay)
+        raise last_exc  # type: ignore[misc]
+
     async def on_processing_start(self, event: MessageEvent) -> None:
         """Add an in-progress reaction for normal Discord message events."""
         if not self._reactions_enabled():
@@ -1367,14 +1405,20 @@ class DiscordAdapter(BasePlatformAdapter):
                 # Fetch the thread directly — threads are addressed by their own ID.
                 channel = self._client.get_channel(int(thread_id))
                 if not channel:
-                    channel = await self._client.fetch_channel(int(thread_id))
+                    channel = await self._discord_retry(
+                        "fetch_thread",
+                        lambda: self._client.fetch_channel(int(thread_id)),
+                    )
                 if not channel:
                     return SendResult(success=False, error=f"Thread {thread_id} not found")
             else:
                 # Get the parent channel
                 channel = self._client.get_channel(int(chat_id))
                 if not channel:
-                    channel = await self._client.fetch_channel(int(chat_id))
+                    channel = await self._discord_retry(
+                        "fetch_channel",
+                        lambda: self._client.fetch_channel(int(chat_id)),
+                    )
                 if not channel:
                     return SendResult(success=False, error=f"Channel {chat_id} not found")
 
@@ -1405,9 +1449,12 @@ class DiscordAdapter(BasePlatformAdapter):
                 else:  # "first" (default) or "off"
                     chunk_reference = reference if i == 0 else None
                 try:
-                    msg = await channel.send(
-                        content=chunk,
-                        reference=chunk_reference,
+                    msg = await self._discord_retry(
+                        "send_message",
+                        lambda chunk=chunk, chunk_reference=chunk_reference: channel.send(
+                            content=chunk,
+                            reference=chunk_reference,
+                        ),
                     )
                 except Exception as e:
                     err_text = str(e)
