@@ -30,6 +30,14 @@ def test_retrieval_router_preserves_manners_guards():
 
     assert "use tools before guessing" in guidance
     assert "do not mention memory/retrieval machinery" in guidance
-    assert "narrate negative space" in guidance
+    assert "do not narrate negative space" in guidance
     assert "unless the user asks for memory/debug" in guidance
     assert "do not read raw credential" in guidance
+
+
+def test_retrieval_router_preserves_proof_standard_gaps():
+    guidance = SESSION_SEARCH_GUIDANCE
+
+    assert "linked artifact/report" in guidance
+    assert "semantic themes/patterns" in guidance
+    assert "not exact proof" in guidance
