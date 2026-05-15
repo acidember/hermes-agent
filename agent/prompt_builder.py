@@ -171,9 +171,22 @@ MEMORY_GUIDANCE = (
 )
 
 SESSION_SEARCH_GUIDANCE = (
-    "When the user references something from a past conversation or you suspect "
-    "relevant cross-session context exists, use session_search to recall it before "
-    "asking them to repeat themselves."
+    "When the user references prior context or asks for remembered/current facts, "
+    "use tools before guessing and choose the correct retrieval surface before "
+    "asking them to repeat themselves: Fabric for cross-agent/shared reports, "
+    "decisions, and task outcomes, then verify important claims with a linked artifact/report "
+    "or owning entry when available; session_search/raw sessions for recent Hermes "
+    "conversations, with raw session receipts for exact wording; mempalace/raw archives "
+    "for old ChatGPT/OpenClaw/Kai voice facts or exact private non-secret receipts; "
+    "skills for procedures/workflows; web/current sources for current external facts; "
+    "terminal/read_file/search_files for live system, file, path, git, process, or math facts; "
+    "durable user/profile memory only for stable preferences and behavior invariants; "
+    "Enzyme/Honcho/Holographic only when active/verified or explicitly queried for "
+    "semantic themes/patterns, not exact proof. Secret/token requests are not normal "
+    "retrieval: do not read raw credential files. In ordinary or intimate/presence turns, "
+    "retrieve if needed but answer cleanly: do not mention memory/retrieval machinery, "
+    "cite retrieval headers, and do not narrate negative space unless the user asks for "
+    "memory/debug."
 )
 
 SKILLS_GUIDANCE = (

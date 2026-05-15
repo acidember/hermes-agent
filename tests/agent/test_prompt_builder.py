@@ -45,8 +45,12 @@ class TestGuidanceConstants:
         assert "like a diary" not in MEMORY_GUIDANCE
         assert ">80%" not in MEMORY_GUIDANCE
 
-    def test_session_search_guidance_is_simple_cross_session_recall(self):
-        assert "relevant cross-session context exists" in SESSION_SEARCH_GUIDANCE
+    def test_session_search_guidance_routes_prior_context_to_right_surface(self):
+        assert "use tools before guessing" in SESSION_SEARCH_GUIDANCE
+        assert "linked artifact/report" in SESSION_SEARCH_GUIDANCE
+        assert "raw session receipts for exact wording" in SESSION_SEARCH_GUIDANCE
+        assert "semantic themes/patterns, not exact proof" in SESSION_SEARCH_GUIDANCE
+        assert "do not narrate negative space" in SESSION_SEARCH_GUIDANCE
         assert "recent turns of the current session" not in SESSION_SEARCH_GUIDANCE
 
 
