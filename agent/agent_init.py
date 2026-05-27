@@ -1211,15 +1211,25 @@ def init_agent(
     agent._memory_manager = None
     if not skip_memory:
         try:
-            _mem_provider_name = mem_config.get("provider", "") if mem_config else ""
+            from agent.memory_provider_selection import resolve_memory_provider_names as _resolve_mem_names
+            _provider_mem_config = locals().get("mem_config")
+            if not isinstance(_provider_mem_config, dict):
+                _provider_mem_config = {}
+            _mem_provider_names = _resolve_mem_names(_provider_mem_config)
 
-            if _mem_provider_name and _mem_provider_name.strip():
+            if _mem_provider_names:
                 from agent.memory_manager import MemoryManager as _MemoryManager
                 from plugins.memory import load_memory_provider as _load_mem
-                agent._memory_manager = _MemoryManager()
-                _mp = _load_mem(_mem_provider_name)
-                if _mp and _mp.is_available():
-                    agent._memory_manager.add_provider(_mp)
+                _multi_provider_enabled = bool(_provider_mem_config.get("multi_provider_enabled", False))
+                agent._memory_manager = _MemoryManager(
+                    allow_multiple_external=_multi_provider_enabled
+                )
+                for _mem_provider_name in _mem_provider_names:
+                    _mp = _load_mem(_mem_provider_name)
+                    if _mp and _mp.is_available():
+                        agent._memory_manager.add_provider(_mp)
+                    else:
+                        _ra().logger.debug("Memory provider '%s' not found or not available", _mem_provider_name)
                 if agent._memory_manager.providers:
                     _init_kwargs = {
                         "session_id": agent.session_id,
@@ -1263,9 +1273,11 @@ def init_agent(
                     except Exception:
                         pass
                     agent._memory_manager.initialize_all(**_init_kwargs)
-                    _ra().logger.info("Memory provider '%s' activated", _mem_provider_name)
+                    _ra().logger.info("Memory providers activated: %s", ", ".join(
+                        provider.name for provider in agent._memory_manager.providers
+                    ))
                 else:
-                    _ra().logger.debug("Memory provider '%s' not found or not available", _mem_provider_name)
+                    _ra().logger.debug("Configured memory providers unavailable: %s", ", ".join(_mem_provider_names))
                     agent._memory_manager = None
         except Exception as _mpe:
             _ra().logger.warning("Memory provider plugin init failed: %s", _mpe)

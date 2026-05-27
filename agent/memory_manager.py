@@ -248,10 +248,11 @@ class MemoryManager:
     provider is allowed.  Failures in one provider never block the other.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *, allow_multiple_external: bool = False) -> None:
         self._providers: List[MemoryProvider] = []
         self._tool_to_provider: Dict[str, MemoryProvider] = {}
         self._has_external: bool = False  # True once a non-builtin provider is added
+        self._allow_multiple_external = allow_multiple_external
 
     # -- Registration --------------------------------------------------------
 
@@ -265,15 +266,16 @@ class MemoryManager:
         is_builtin = provider.name == "builtin"
 
         if not is_builtin:
-            if self._has_external:
+            if self._has_external and not self._allow_multiple_external:
                 existing = next(
                     (p.name for p in self._providers if p.name != "builtin"), "unknown"
                 )
                 logger.warning(
                     "Rejected memory provider '%s' — external provider '%s' is "
                     "already registered. Only one external memory provider is "
-                    "allowed at a time. Configure which one via memory.provider "
-                    "in config.yaml.",
+                    "allowed at a time unless MemoryManager is explicitly "
+                    "constructed with allow_multiple_external=True. Configure "
+                    "which one via memory.provider in config.yaml.",
                     provider.name, existing,
                 )
                 return
