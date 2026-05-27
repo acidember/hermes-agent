@@ -1,0 +1,32 @@
+{
+  "rung": "one-session-synthetic-smoke",
+  "observed_at_utc": "2026-05-27T19:32:45Z",
+  "head": "4bf54b472b23937d79422956533300689c7deecd",
+  "status": [
+    "## work/mnemos-gate-refresh-origin-main-20260527T191822Z...acidember/work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+    " M agent/system_prompt.py",
+    " M tests/agent/test_mnemos_prompt_integration.py",
+    "?? reports/mnemos-continuity/20260527T193034Z-one-session-synthetic-smoke/"
+  ],
+  "changed_files": [
+    "M\tagent/system_prompt.py",
+    "M\ttests/agent/test_mnemos_prompt_integration.py"
+  ],
+  "rails": {
+    "source": "synthetic_shadow_sqlite",
+    "allow_live_db": false,
+    "allow_writes": false,
+    "telemetry_only": true,
+    "low_trust_required": true,
+    "one_session_consumption": true,
+    "no_live_private_mnemos": true,
+    "no_provider_promotion": true,
+    "no_gateway_restart_for_this_rung": true
+  },
+  "evidence_files": [
+    "preflight.txt",
+    "red-pytest.txt",
+    "green-new-tests.txt"
+  ],
+  "next_ladder_rung": "parent-rerunnable one-session smoke harness/report, then non-default private fixture design only"
+}

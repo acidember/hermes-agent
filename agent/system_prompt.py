@@ -336,6 +336,9 @@ def _build_mnemos_prompt_admission_block(agent: Any) -> str:
     runtime path on its own. Any malformed state fails closed to no prompt text.
     """
 
+    if getattr(agent, "_mnemos_prompt_admission_consumed", False) is True:
+        return ""
+
     raw_config = getattr(agent, "_mnemos_prompt_admission_config", None)
     if not raw_config:
         return ""
@@ -364,7 +367,15 @@ def _build_mnemos_prompt_admission_block(agent: Any) -> str:
     prompt_text = packet.get("prompt_text")
     if not isinstance(prompt_text, str):
         return ""
-    return prompt_text.strip()
+    prompt_text = prompt_text.strip()
+    if not prompt_text:
+        return ""
+
+    try:
+        setattr(agent, "_mnemos_prompt_admission_consumed", True)
+    except Exception:
+        pass
+    return prompt_text
 
 
 def _record_mnemos_prompt_packet_metadata(agent: Any, packet: dict[str, Any]) -> None:

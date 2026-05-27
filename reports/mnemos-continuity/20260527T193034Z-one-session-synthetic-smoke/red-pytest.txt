@@ -1,0 +1,58 @@
+F.                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_enabled_prompt_hook_is_consumed_after_one_successful_synthetic_injection _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x748f86632ff0>
+
+    def test_enabled_prompt_hook_is_consumed_after_one_successful_synthetic_injection(monkeypatch):
+        agent = _make_agent_with_config(_explicit_test_config())
+        calls = []
+    
+        def fake_handler(args, **kwargs):
+            calls.append(args)
+            return json.dumps(
+                {
+                    "result": json.dumps(
+                        {
+                            "low_trust": True,
+                            "ok": True,
+                            "profile": "mnemos-shadow-canary",
+                            "query": args["query"],
+                            "source": "synthetic_shadow_sqlite",
+                            "tool": "mnemos_ro_hypomnema_search",
+                            "results": [
+                                {
+                                    "low_trust": True,
+                                    "source": "synthetic_shadow_sqlite",
+                                    "body": "hello from persistent non-default shadow fixture; one session smoke.",
+                                }
+                            ],
+                        }
+                    )
+                }
+            )
+    
+        monkeypatch.setattr(
+            "tools.registry.registry.get_entry",
+            lambda name: SimpleNamespace(handler=fake_handler),
+        )
+    
+        first_parts = agent._build_system_prompt_parts()
+        second_parts = agent._build_system_prompt_parts()
+    
+>       assert len(calls) == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len([{'limit': 2, 'query': 'hello'}, {'limit': 2, 'query': 'hello'}])
+
+tests/agent/test_mnemos_prompt_integration.py:285: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     run_agent:agent_runtime_helpers.py:1337 OpenAI client created (agent_init, shared=True) thread=MainThread:128159878955328 provider= base_url=https://openrouter.ai/api/v1 model=
+=============================== warnings summary ===============================
+../../venv/lib/python3.12/site-packages/discord/player.py:30
+  /home/ember/hermes-agent-src/venv/lib/python3.12/site-packages/discord/player.py:30: DeprecationWarning: 'audioop' is deprecated and slated for removal in Python 3.13
+    import audioop
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/agent/test_mnemos_prompt_integration.py::test_enabled_prompt_hook_is_consumed_after_one_successful_synthetic_injection
+1 failed, 1 passed, 1 warning in 2.05s

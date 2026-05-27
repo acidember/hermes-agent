@@ -1,0 +1,14 @@
+--- git ---
+## work/mnemos-gate-refresh-origin-main-20260527T191822Z...acidember/work/mnemos-gate-refresh-origin-main-20260527T191822Z
+?? reports/mnemos-continuity/20260527T193034Z-one-session-synthetic-smoke/
+4bf54b472 (HEAD -> work/mnemos-gate-refresh-origin-main-20260527T191822Z, acidember/work/mnemos-gate-refresh-origin-main-20260527T191822Z) feat(mnemos): add synthetic prompt gate refresh
+e8955f222 (origin/main, origin/HEAD) fix(codex): drop dead model slugs that HTTP 400 on ChatGPT Pro (#33424)
+5deb384b5 chore(release): map donovan-yohan for #33263 salvage
+origin_count=0	1
+--- gateway ---
+MainPID=1824115
+ActiveState=active
+SubState=running
+gateway_cwd=/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z
+--- mnemos gate ---
+{'status': 'armed_synthetic_canary', 'rung': 'default-profile synthetic prompt-admission canary', 'activation_possible': True, 'prompt_injection_possible': True, 'retriever_available': True, 'low_trust': True, 'source': 'synthetic_shadow_sqlite', 'tool': 'mnemos_ro_hypomnema_search', 'rails': {'canary': True, 'source': 'synthetic_shadow_sqlite', 'mcp_tool': 'mnemos_ro_hypomnema_search', 'max_items': 2, 'max_chars': 800, 'fail_closed': True, 'require_low_trust': True, 'allow_live_db': False, 'allow_writes': False, 'telemetry_only': True}, 'reason_codes': ['explicit_test_config_enabled'], 'next_safe_action': 'run_one_session_synthetic_smoke_before_any_expansion'}

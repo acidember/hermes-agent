@@ -244,3 +244,82 @@ def test_enabled_prompt_hook_keeps_metadata_only_telemetry_without_raw_prompt_te
     assert isinstance(metadata, dict)
     assert "persistent non-default shadow fixture" not in str(metadata)
     assert "prompt_text" not in metadata
+
+
+def test_enabled_prompt_hook_is_consumed_after_one_successful_synthetic_injection(monkeypatch):
+    agent = _make_agent_with_config(_explicit_test_config())
+    calls = []
+
+    def fake_handler(args, **kwargs):
+        calls.append(args)
+        return json.dumps(
+            {
+                "result": json.dumps(
+                    {
+                        "low_trust": True,
+                        "ok": True,
+                        "profile": "mnemos-shadow-canary",
+                        "query": args["query"],
+                        "source": "synthetic_shadow_sqlite",
+                        "tool": "mnemos_ro_hypomnema_search",
+                        "results": [
+                            {
+                                "low_trust": True,
+                                "source": "synthetic_shadow_sqlite",
+                                "body": "hello from persistent non-default shadow fixture; one session smoke.",
+                            }
+                        ],
+                    }
+                )
+            }
+        )
+
+    monkeypatch.setattr(
+        "tools.registry.registry.get_entry",
+        lambda name: SimpleNamespace(handler=fake_handler),
+    )
+
+    first_parts = agent._build_system_prompt_parts()
+    second_parts = agent._build_system_prompt_parts()
+
+    assert len(calls) == 1
+    assert LOW_TRUST_HEADER in first_parts["volatile"]
+    assert LOW_TRUST_HEADER not in second_parts["volatile"]
+    assert getattr(agent, "_mnemos_prompt_admission_consumed", False) is True
+
+
+def test_failed_or_rejected_mnemos_packet_does_not_consume_one_session_gate(monkeypatch):
+    agent = _make_agent_with_config(_explicit_test_config())
+
+    def fake_handler(args, **kwargs):
+        return json.dumps(
+            {
+                "result": json.dumps(
+                    {
+                        "low_trust": True,
+                        "ok": True,
+                        "profile": "mnemos-shadow-canary",
+                        "query": args["query"],
+                        "source": "synthetic_shadow_sqlite",
+                        "tool": "mnemos_ro_hypomnema_search",
+                        "results": [
+                            {
+                                "low_trust": False,
+                                "source": "synthetic_shadow_sqlite",
+                                "body": "this should be rejected and never consume the gate.",
+                            }
+                        ],
+                    }
+                )
+            }
+        )
+
+    monkeypatch.setattr(
+        "tools.registry.registry.get_entry",
+        lambda name: SimpleNamespace(handler=fake_handler),
+    )
+
+    prompt = agent._build_system_prompt()
+
+    assert LOW_TRUST_HEADER not in prompt
+    assert getattr(agent, "_mnemos_prompt_admission_consumed", False) is False
