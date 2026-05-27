@@ -1,0 +1,51 @@
+{
+  "rung": "private-fixture-validator-implementation",
+  "observed_at_utc": "2026-05-27T20:25:26Z",
+  "task_id": "t_1582048b",
+  "branch": "work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "helper_api": "validate_private_fixture_response(response: Any, *, max_items: int = 2) -> dict[str, Any]",
+  "future_candidate_source": "non_default_private_fixture_stub",
+  "future_candidate_tool": "mnemos_ro_private_fixture_hypomnema_search",
+  "changed_files": [
+    "agent/mnemos_admission.py",
+    "tests/agent/test_mnemos_private_fixture_validator.py",
+    "reports/mnemos-continuity/20260527T202526Z-private-fixture-validator-impl/report.md",
+    "reports/mnemos-continuity/20260527T202526Z-private-fixture-validator-impl/verification.txt",
+    "reports/mnemos-continuity/20260527T202526Z-private-fixture-validator-impl/decision.json"
+  ],
+  "verification": [
+    {
+      "command": "python -m pytest tests/agent/test_mnemos_private_fixture_validator.py -q",
+      "phase": "RED",
+      "result": "ImportError collecting test module because helper/constants were not yet implemented"
+    },
+    {
+      "command": "python -m pytest tests/agent/test_mnemos_private_fixture_validator.py -q",
+      "phase": "GREEN",
+      "result": "14 passed in 0.23s"
+    },
+    {
+      "command": "python -m pytest tests/agent/test_mnemos_private_fixture_validator.py tests/agent/test_mnemos_admission.py tests/agent/test_mnemos_prompt_canary.py -q",
+      "phase": "adjacent",
+      "result": "47 passed in 0.64s"
+    },
+    {
+      "command": "python -m pytest tests/agent/test_mnemos_prompt_integration.py tests/agent/test_mnemos_one_session_smoke.py -q",
+      "phase": "shared-helper-regression",
+      "result": "8 passed, 1 unrelated deprecation warning in 2.66s"
+    }
+  ],
+  "negative_space": {
+    "live_private_memory_read": false,
+    "profile_created_or_deleted": false,
+    "db_created_or_migrated": false,
+    "default_profile_config_edited": false,
+    "provider_promoted": false,
+    "gateway_restarted": false,
+    "cron_changed": false,
+    "mcp_registered": false,
+    "runtime_prompt_activation_changed": false,
+    "secret_read": false,
+    "force_push_or_main_mutation": false
+  }
+}

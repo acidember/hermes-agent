@@ -1,0 +1,28 @@
+TDD / verification transcript
+
+RED command:
+python -m pytest tests/agent/test_mnemos_private_fixture_validator.py -q
+
+RED result:
+ERROR tests/agent/test_mnemos_private_fixture_validator.py
+ImportError: cannot import name 'PRIVATE_FIXTURE_SOURCE' from 'agent.mnemos_admission'
+1 error in 0.08s
+
+GREEN targeted command:
+python -m pytest tests/agent/test_mnemos_private_fixture_validator.py -q
+
+GREEN targeted result:
+14 passed in 0.23s
+
+Adjacent command:
+python -m pytest tests/agent/test_mnemos_private_fixture_validator.py tests/agent/test_mnemos_admission.py tests/agent/test_mnemos_prompt_canary.py -q
+
+Adjacent result:
+47 passed in 0.64s
+
+Prompt/shared helper regression command:
+python -m pytest tests/agent/test_mnemos_prompt_integration.py tests/agent/test_mnemos_one_session_smoke.py -q
+
+Prompt/shared helper regression result:
+8 passed, 1 warning in 2.66s
+Warning: discord/player.py imports deprecated audioop under Python 3.12; unrelated to changed Mnemos validator slice.

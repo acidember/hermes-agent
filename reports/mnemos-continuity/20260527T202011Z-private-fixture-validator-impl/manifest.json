@@ -1,0 +1,39 @@
+{
+  "rung": "private-fixture-validator-scout",
+  "observed_at_utc": "2026-05-27T20:20:11Z",
+  "task_id": "t_7d857775",
+  "branch": "work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "source_edited": false,
+  "report_artifacts": [
+    "reports/mnemos-continuity/20260527T202011Z-private-fixture-validator-impl/scout.md",
+    "reports/mnemos-continuity/20260527T202011Z-private-fixture-validator-impl/manifest.json"
+  ],
+  "primary_module_locations": [
+    "agent/mnemos_admission.py",
+    "agent/mnemos_prompt_canary.py",
+    "agent/system_prompt.py",
+    "agent/agent_init.py"
+  ],
+  "primary_test_locations": [
+    "tests/agent/test_mnemos_admission.py",
+    "tests/agent/test_mnemos_prompt_canary.py",
+    "tests/agent/test_mnemos_one_session_smoke.py",
+    "tests/agent/test_mnemos_prompt_integration.py"
+  ],
+  "recommended_new_test_file": "tests/agent/test_mnemos_private_fixture_validator.py",
+  "future_candidate_source": "non_default_private_fixture_stub",
+  "future_candidate_tool": "mnemos_ro_private_fixture_hypomnema_search",
+  "verification": {
+    "command": "python -m pytest tests/agent/test_mnemos_admission.py tests/agent/test_mnemos_prompt_canary.py tests/agent/test_mnemos_one_session_smoke.py -q",
+    "result": "35 passed in 0.51s"
+  },
+  "negative_space": {
+    "live_private_memory_read": false,
+    "profile_created": false,
+    "db_created": false,
+    "default_profile_config_edited": false,
+    "provider_promoted": false,
+    "gateway_restarted": false,
+    "source_code_edited": false
+  }
+}
