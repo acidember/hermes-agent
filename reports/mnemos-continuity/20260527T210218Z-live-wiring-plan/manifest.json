@@ -1,0 +1,35 @@
+{
+  "timestamp_utc": "2026-05-27T21:02:18Z",
+  "rung": "L0_live_wiring_plan_only",
+  "status": "plan_only_no_activation",
+  "branch": "work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "artifacts": [
+    "live-wiring-plan.md",
+    "manifest.json"
+  ],
+  "observed_state": {
+    "memory_provider": "honcho",
+    "built_in_memory_enabled": true,
+    "user_profile_enabled": true,
+    "context_engine": "compressor",
+    "mnemos_prompt_admission_enabled": true,
+    "mnemos_source": "synthetic_shadow_sqlite",
+    "mnemos_allow_live_db": false,
+    "mnemos_allow_writes": false,
+    "mnemos_telemetry_only": true,
+    "holographic_installed_not_active": true,
+    "enzyme_installed_not_active": true
+  },
+  "negative_space": {
+    "default_config_edited": false,
+    "default_profile_changed": false,
+    "gateway_restarted": false,
+    "live_db_pointed_at_runtime": false,
+    "mnemos_enabled_as_memory_provider": false,
+    "honcho_replaced": false,
+    "db_migrated_or_seeded": false,
+    "memory_data_copied_between_backends": false,
+    "raw_private_rows_written_to_artifacts": false
+  },
+  "next_approval_handle": "YES L1 LIVE READ DISCOVERY — NO PROMPT ADMISSION"
+}
