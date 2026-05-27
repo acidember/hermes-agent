@@ -1,0 +1,57 @@
+{
+  "timestamp_utc": "2026-05-27T22:00:00Z",
+  "rung": "memory_mesh_actual_shadow_profile_config_and_smoke",
+  "status": "passed",
+  "branch": "work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "profile": "/home/ember/.hermes/profiles/mnemos-shadow-ro",
+  "profile_state_after": {
+    "enabled": false,
+    "state": "stopped",
+    "default_profile": false,
+    "gateway_enabled": false,
+    "cron_enabled": false
+  },
+  "actual_profile_smoke_evidence": "actual-profile-smoke-output.json",
+  "post_verify_evidence": "post-verify.json",
+  "profile_artifact_inventory": "profile-artifact-inventory.json",
+  "resolved_provider_names": ["honcho", "enzyme", "holographic"],
+  "registered_providers": ["honcho", "enzyme", "holographic"],
+  "aggregated_tool_names": [
+    "enzyme_search",
+    "fact_feedback",
+    "fact_store",
+    "honcho_conclude",
+    "honcho_context",
+    "honcho_profile",
+    "honcho_reasoning",
+    "honcho_search"
+  ],
+  "verification": {
+    "actual_profile_smoke_pass": true,
+    "default_config_hash_unchanged": true,
+    "targeted_tests": "7 passed",
+    "git_diff_check": "passed",
+    "json_validation": "passed",
+    "gateway_service_restart_performed": false
+  },
+  "profile_local_changes": [
+    "mnemos-shadow-ro/config.yaml memory mesh enabled for profile only",
+    "mnemos-shadow-ro/honcho.json tools-only no initOnSessionStart no saveMessages shadow host",
+    "mnemos-shadow-ro/plugins/enzyme copied from default user plugin for profile-local discovery",
+    "mnemos-shadow-ro/enzyme-vault/README.md tiny non-private fixture",
+    "mnemos-shadow-ro/holographic/ reserved for profile-local store"
+  ],
+  "negative_space": {
+    "default_config_edited": false,
+    "default_gateway_restarted": false,
+    "default_profile_memory_mesh_enabled": false,
+    "llm_chat_launched": false,
+    "sync_turn_called": false,
+    "memory_tool_calls_invoked": false,
+    "honcho_tool_call_or_session_write": false,
+    "mnemos_live_prompt_admission": false,
+    "generated_binary_dbs_committed": false,
+    "copied_user_plugin_source_committed": false
+  },
+  "next_approval_handle": "YES MEMORY MESH SHADOW CHAT SMOKE — NO DEFAULT GATEWAY"
+}

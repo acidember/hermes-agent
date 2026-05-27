@@ -1,0 +1,22 @@
+{
+  "config.yaml": {
+    "exists": true,
+    "size": 1926,
+    "sha256": "3f3861fa23486b75007f73f770a67958d7008d2b057abe3c4b9450ce3d0417ef"
+  },
+  "honcho.json": {
+    "exists": true,
+    "size": 392,
+    "sha256": "19dbaa2e3d3b6ba00d12b805895ccbd1e753612f607bfef04331c291503b40f5"
+  },
+  "enzyme-vault/README.md": {
+    "exists": true,
+    "size": 101,
+    "sha256": "a2465cfc019d6e804671e9169b4987f883428de5159b98e6f487d90f9f1056c3"
+  },
+  "plugins/enzyme/__init__.py": {
+    "exists": true,
+    "size": 19308,
+    "sha256": "48d916677ebe640c47576274945669eb57f7d45a42b478a2a5425942c072fe10"
+  }
+}

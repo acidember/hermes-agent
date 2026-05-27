@@ -1,0 +1,58 @@
+profile:
+  name: mnemos-shadow-ro
+  enabled: false
+  state: stopped
+  default_profile: false
+  dispatching: false
+  activation_performed: false
+
+gateway:
+  enabled: false
+
+cron:
+  enabled: false
+  jobs_enabled: false
+
+memory:
+  memory_enabled: false
+  user_profile_enabled: false
+  providers: []
+
+# Parked non-default shadow profile. Do not use for general chat/model work.
+model:
+  provider: disabled-placeholder
+  default: disabled-placeholder
+
+mcp_servers:
+  mnemos_ro_shadow:
+    command: "python3"
+    args:
+      - "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T024120Z/live-wiring-shadow/profile-artifacts/mnemos_shadow_mcp_server.py"
+      - "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T024120Z/live-wiring-shadow/synthetic-fixtures/mnemos_shadow.sqlite3"
+      - "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T024120Z/live-wiring-shadow"
+      - "mnemos-shadow-canary"
+    enabled: false
+    env:
+      PATH: "${PATH}"
+      HOME: "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T024120Z/live-wiring-shadow/empty-home"
+    timeout: 15
+    connect_timeout: 5
+    supports_parallel_tool_calls: false
+    sampling:
+      enabled: false
+    tools:
+      include:
+        - mnemos_ro_hypomnema_search
+      resources: false
+      prompts: false
+
+rails:
+  no_default_profile_wiring: true
+  no_gateway_restart: true
+  no_cron_changes: true
+  no_provider_changes: true
+  no_persistent_memory_writes: true
+  no_live_mnemos_or_kai_db: true
+  no_upstream_mnemos_serve: true
+  no_write_or_promotion_tools: true
+  low_trust_output_only: true

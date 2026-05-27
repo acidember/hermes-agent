@@ -1,0 +1,69 @@
+{
+  "hermes_home": "/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/20260527T220000Z-memory-mesh-shadow-smoke/shadow-hermes-home",
+  "config_memory": {
+    "memory_enabled": false,
+    "user_profile_enabled": false,
+    "memory_char_limit": 2200,
+    "user_char_limit": 1375,
+    "provider": "honcho",
+    "providers": [
+      "enzyme",
+      "holographic"
+    ],
+    "multi_provider_enabled": true
+  },
+  "resolved_provider_names": [
+    "honcho",
+    "enzyme",
+    "holographic"
+  ],
+  "provider_rows": [
+    {
+      "name": "honcho",
+      "loaded": true,
+      "available": false,
+      "registered": false,
+      "tools": [],
+      "system_prompt_block_prefix": "",
+      "error": null
+    },
+    {
+      "name": "enzyme",
+      "loaded": false,
+      "available": false,
+      "registered": false,
+      "tools": [],
+      "system_prompt_block_prefix": "",
+      "error": null
+    },
+    {
+      "name": "holographic",
+      "loaded": true,
+      "available": true,
+      "registered": true,
+      "tools": [],
+      "system_prompt_block_prefix": "",
+      "error": null
+    }
+  ],
+  "registered_providers": [
+    {
+      "name": "holographic",
+      "tool_names": [
+        "fact_store",
+        "fact_feedback"
+      ],
+      "system_prompt_block_prefix": "# Holographic Memory\nActive. Empty fact store \u2014 proactively add facts the user would expect you to remember.\nUse fact_st"
+    }
+  ],
+  "all_tool_names": [
+    "fact_feedback",
+    "fact_store"
+  ],
+  "negative_space": {
+    "sync_turn_called": false,
+    "memory_tool_calls_invoked": false,
+    "gateway_restarted": false,
+    "default_profile_config_touched": false
+  }
+}

@@ -1,0 +1,28 @@
+profile:
+  name: mnemos-shadow-ro-smoke
+  enabled: false
+  state: stopped
+gateway:
+  enabled: false
+cron:
+  enabled: false
+  jobs_enabled: false
+memory:
+  memory_enabled: false
+  user_profile_enabled: false
+  provider: honcho
+  providers:
+    - enzyme
+    - holographic
+  multi_provider_enabled: true
+plugins:
+  enzyme:
+    vault_path: /home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/20260527T220000Z-memory-mesh-shadow-smoke/enzyme-vault
+    injection_mode: tools
+    refresh_on_sync: false
+    max_results: 2
+    max_context_chars: 400
+  hermes-memory-store:
+    db_path: /home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/20260527T220000Z-memory-mesh-shadow-smoke/shadow-hermes-home/memory_store.db
+    auto_extract: false
+    default_trust: 0.5

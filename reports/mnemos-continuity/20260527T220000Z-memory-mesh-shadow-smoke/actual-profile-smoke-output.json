@@ -1,0 +1,113 @@
+{
+  "hermes_home": "/home/ember/.hermes/profiles/mnemos-shadow-ro",
+  "config_profile": {
+    "name": "mnemos-shadow-ro",
+    "enabled": false,
+    "state": "stopped",
+    "default_profile": false,
+    "dispatching": false,
+    "activation_performed": false
+  },
+  "config_gateway": {
+    "media_delivery_allow_dirs": [],
+    "trust_recent_files": true,
+    "trust_recent_files_seconds": 600,
+    "enabled": false
+  },
+  "config_cron": {
+    "wrap_response": true,
+    "max_parallel_jobs": null,
+    "enabled": false,
+    "jobs_enabled": false
+  },
+  "config_memory": {
+    "memory_enabled": true,
+    "user_profile_enabled": false,
+    "memory_char_limit": 2200,
+    "user_char_limit": 1375,
+    "provider": "honcho",
+    "providers": [
+      "enzyme",
+      "holographic"
+    ],
+    "multi_provider_enabled": true
+  },
+  "resolved_provider_names": [
+    "honcho",
+    "enzyme",
+    "holographic"
+  ],
+  "provider_rows": [
+    {
+      "name": "honcho",
+      "loaded": true,
+      "available": true,
+      "registered": true,
+      "error": null
+    },
+    {
+      "name": "enzyme",
+      "loaded": true,
+      "available": true,
+      "registered": true,
+      "error": null
+    },
+    {
+      "name": "holographic",
+      "loaded": true,
+      "available": true,
+      "registered": true,
+      "error": null
+    }
+  ],
+  "registered_providers": [
+    {
+      "name": "honcho",
+      "tool_names": [
+        "honcho_profile",
+        "honcho_search",
+        "honcho_reasoning",
+        "honcho_context",
+        "honcho_conclude"
+      ],
+      "system_prompt_block_prefix": "# Honcho Memory\nActive (tools-only mode). Use honcho_profile, honcho_search, honcho_reasoning, honcho_context, and honcho_conclude tools to access user memory.",
+      "prefetch_empty": ""
+    },
+    {
+      "name": "enzyme",
+      "tool_names": [
+        "enzyme_search"
+      ],
+      "system_prompt_block_prefix": "# Enzyme Memory\nActive (tools-only mode). Use enzyme_search to find specific patterns in the vault. No automatic context injection.",
+      "prefetch_empty": ""
+    },
+    {
+      "name": "holographic",
+      "tool_names": [
+        "fact_store",
+        "fact_feedback"
+      ],
+      "system_prompt_block_prefix": "# Holographic Memory\nActive. Empty fact store \u2014 proactively add facts the user would expect you to remember.\nUse fact_store(action='add') to store durable structured facts about pe",
+      "prefetch_empty": ""
+    }
+  ],
+  "all_tool_names": [
+    "enzyme_search",
+    "fact_feedback",
+    "fact_store",
+    "honcho_conclude",
+    "honcho_context",
+    "honcho_profile",
+    "honcho_reasoning",
+    "honcho_search"
+  ],
+  "pass": true,
+  "negative_space": {
+    "sync_turn_called": false,
+    "memory_tool_calls_invoked": false,
+    "gateway_restarted": false,
+    "default_profile_config_touched": false,
+    "llm_chat_launched": false,
+    "mnemos_prompt_admission_changed": false
+  }
+}

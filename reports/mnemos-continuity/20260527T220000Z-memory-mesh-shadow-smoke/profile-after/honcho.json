@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "recallMode": "tools",
+  "initOnSessionStart": false,
+  "saveMessages": false,
+  "hosts": {
+    "hermes.mnemos-shadow-ro": {
+      "enabled": true,
+      "aiPeer": "mnemos-shadow-ro",
+      "peerName": "shadow-smoke-user",
+      "workspace": "hermes-shadow-smoke",
+      "recallMode": "tools",
+      "initOnSessionStart": false,
+      "saveMessages": false
+    }
+  }
+}
