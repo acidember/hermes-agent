@@ -1,0 +1,1 @@
+You are running a bounded shadow-profile memory mesh smoke. Do not call any tools. Do not store or retrieve memory. Reply in compact JSON only with keys: memory_related_tool_names_visible, notes. List exact tool/function names from your tool menu that are related to Honcho, Enzyme, or Holographic/fact memory. Do not invent names; if none are visible, use an empty list.

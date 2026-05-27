@@ -1,0 +1,61 @@
+{
+  "timestamp_utc": "2026-05-27T22:30:00Z",
+  "rung": "memory_mesh_shadow_chat_smoke",
+  "status": "passed",
+  "branch": "work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "profile": "mnemos-shadow-ro",
+  "command_shape": "python -m hermes_cli.main --profile mnemos-shadow-ro chat --provider openai-codex -m gpt-5.5 --toolsets memory --max-turns 1 -Q -q ...",
+  "used_worktree_source": true,
+  "persistent_model_config_changed": false,
+  "chat_smokes": [
+    {
+      "name": "guided_tool_menu_smoke",
+      "output": "chat-smoke-output.txt",
+      "stderr": "chat-smoke-stderr.txt",
+      "exit_code_file": "chat-smoke-exit-code.txt",
+      "exit_code": 0
+    },
+    {
+      "name": "blind_tool_menu_smoke",
+      "output": "blind-chat-smoke-output.txt",
+      "stderr": "blind-chat-smoke-stderr.txt",
+      "exit_code_file": "blind-chat-smoke-exit-code.txt",
+      "exit_code": 0
+    }
+  ],
+  "model_visible_tools_verified": [
+    "honcho_profile",
+    "honcho_search",
+    "honcho_reasoning",
+    "honcho_context",
+    "honcho_conclude",
+    "enzyme_search",
+    "fact_store",
+    "fact_feedback"
+  ],
+  "verification": {
+    "verify_summary": "verify-summary.json",
+    "guided_seen_required_count": 8,
+    "blind_seen_required_count": 8,
+    "blind_all_required_seen": true,
+    "default_config_hash_unchanged": true,
+    "shadow_config_hash_unchanged_during_chat": true,
+    "gateway_restarted": false,
+    "targeted_tests": "7 passed",
+    "git_diff_check": "passed",
+    "json_validation": "passed"
+  },
+  "negative_space": {
+    "default_config_edited": false,
+    "default_gateway_restarted": false,
+    "default_profile_memory_mesh_enabled": false,
+    "shadow_config_changed_during_chat": false,
+    "memory_tool_calls_invoked": false,
+    "memory_writes_invoked": false,
+    "sync_turn_called": false,
+    "mnemos_live_prompt_admission": false,
+    "cron_changed": false,
+    "persistent_provider_or_model_config_changed": false
+  },
+  "next_approval_handle": "YES MEMORY MESH SHADOW READONLY TOOL CALLS — NO WRITES"
+}

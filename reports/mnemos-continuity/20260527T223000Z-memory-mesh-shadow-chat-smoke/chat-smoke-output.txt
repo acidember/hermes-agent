@@ -1,0 +1,2 @@
+  ⚠ tirith security scanner enabled but not available — command scanning will use pattern matching only
+{"profile_guess":"mnemos-shadow-ro","memory_tools_you_can_see":["honcho_profile","honcho_search","honcho_reasoning","honcho_context","honcho_conclude","enzyme_search","fact_store","fact_feedback"],"notes":"Tool names are visible from the tool menu; no tools were called and no memory was stored or retrieved."}

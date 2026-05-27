@@ -1,0 +1,14 @@
+{
+  "default_config": {
+    "path": "/home/ember/.hermes/config.yaml",
+    "exists": true,
+    "sha256": "a15ab1ed57698a828de64c80c5b768d872ffd051ad922616c991bab1fac465c8",
+    "size": 18564
+  },
+  "shadow_config": {
+    "path": "/home/ember/.hermes/profiles/mnemos-shadow-ro/config.yaml",
+    "exists": true,
+    "sha256": "3f3861fa23486b75007f73f770a67958d7008d2b057abe3c4b9450ce3d0417ef",
+    "size": 1926
+  }
+}

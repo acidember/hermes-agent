@@ -1,0 +1,1 @@
+{"memory_related_tool_names_visible":["functions.honcho_profile","functions.honcho_search","functions.honcho_reasoning","functions.honcho_context","functions.honcho_conclude","functions.enzyme_search","functions.fact_store","functions.fact_feedback"],"notes":"No tools called; no memory stored or retrieved."}

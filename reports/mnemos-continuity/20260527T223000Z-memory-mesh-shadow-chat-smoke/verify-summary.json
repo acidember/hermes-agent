@@ -1,0 +1,35 @@
+{
+  "guided_exit_code": "0",
+  "blind_exit_code": "0",
+  "guided_seen_required_count": 8,
+  "blind_seen_required_count": 8,
+  "guided_seen": [
+    "enzyme_search",
+    "fact_feedback",
+    "fact_store",
+    "honcho_conclude",
+    "honcho_context",
+    "honcho_profile",
+    "honcho_reasoning",
+    "honcho_search"
+  ],
+  "blind_seen": [
+    "enzyme_search",
+    "fact_feedback",
+    "fact_store",
+    "honcho_conclude",
+    "honcho_context",
+    "honcho_profile",
+    "honcho_reasoning",
+    "honcho_search"
+  ],
+  "blind_all_required_seen": true,
+  "default_config_hash_unchanged": true,
+  "shadow_config_hash_unchanged_during_chat": true,
+  "default_memory_multi_provider_enabled": null,
+  "shadow_profile_state": "stopped",
+  "shadow_gateway_enabled": false,
+  "shadow_cron_enabled": false,
+  "memory_tool_call_markers_in_outputs": false,
+  "pass": true
+}

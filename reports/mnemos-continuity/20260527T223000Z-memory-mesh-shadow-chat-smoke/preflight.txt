@@ -1,0 +1,32 @@
+=== hermes which/version ===
+/home/ember/.local/bin/hermes
+Hermes Agent v0.14.0 (2026.5.16)
+Project: /home/ember/hermes-agent-src
+Python: 3.12.3
+OpenAI SDK: 2.24.0
+Update available: 142 commits behind — run 'hermes update'
+
+=== default model safe summary ===
+model.provider= openai-codex
+model.default= gpt-5.5
+memory.provider= honcho
+memory.providers= ['enzyme', 'holographic']
+memory.multi_provider_enabled= None
+memory.resolved= ['honcho']
+mnemos.source= synthetic_shadow_sqlite
+mnemos.allow_live_db= False
+mnemos.allow_writes= False
+
+=== shadow profile summary ===
+profile= {'name': 'mnemos-shadow-ro', 'enabled': False, 'state': 'stopped', 'default_profile': False, 'dispatching': False, 'activation_performed': False}
+gateway= {'media_delivery_allow_dirs': [], 'trust_recent_files': True, 'trust_recent_files_seconds': 600, 'enabled': False}
+cron= {'wrap_response': True, 'max_parallel_jobs': None, 'enabled': False, 'jobs_enabled': False}
+model.provider= disabled-placeholder
+model.default= disabled-placeholder
+memory= {'memory_enabled': True, 'user_profile_enabled': False, 'memory_char_limit': 2200, 'user_char_limit': 1375, 'provider': 'honcho', 'providers': ['enzyme', 'holographic'], 'multi_provider_enabled': True}
+resolved= ['honcho', 'enzyme', 'holographic']
+
+=== gateway service timestamp ===
+ExecMainStartTimestamp=Wed 2026-05-27 12:42:42 PDT
+ActiveState=active
+SubState=running
