@@ -1,0 +1,82 @@
+{
+  "artifact": "mnemos-next-rung-readonly",
+  "observed_at_start": "2026-05-27T16:03:11-07:00",
+  "report_path": "reports/mnemos-continuity/20260527T230300Z-mnemos-next-rung-readonly/report.md",
+  "workdir": "/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "branch": "work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "head_before_artifacts": "344f6f82e",
+  "gateway": {
+    "active_state": "active",
+    "sub_state": "running",
+    "main_pid": 2176041,
+    "start_timestamp": "Wed 2026-05-27 15:40:57 PDT",
+    "cwd": "/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z"
+  },
+  "memory_mesh": {
+    "resolved_providers": ["honcho", "enzyme", "holographic"],
+    "multi_provider_enabled": true
+  },
+  "mnemos_rails": {
+    "status": "armed_synthetic_canary",
+    "source": "synthetic_shadow_sqlite",
+    "tool": "mnemos_ro_hypomnema_search",
+    "allow_live_db": false,
+    "allow_writes": false,
+    "require_low_trust": true,
+    "telemetry_only": true
+  },
+  "mcp_test": {
+    "server": "mnemos_ro_default_canary",
+    "connected": true,
+    "tools_discovered": 1,
+    "tool": "mnemos_ro_hypomnema_search"
+  },
+  "direct_tool_smoke": {
+    "query": "hello",
+    "ok": true,
+    "source": "synthetic_shadow_sqlite",
+    "low_trust": true,
+    "profile": "mnemos-shadow-canary",
+    "result_count": 1
+  },
+  "synthetic_fixture_metadata": {
+    "path": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T024120Z/live-wiring-shadow/synthetic-fixtures/mnemos_shadow.sqlite3",
+    "exists": true,
+    "size_bytes": 8192,
+    "sha256": "7d47b369af6fa468077ce6fe687c075439882f4d90a1353c588ec202e88d3950",
+    "tables": ["hypomnema"],
+    "counts": {"hypomnema": 3}
+  },
+  "one_session_smoke": {
+    "status": "pass",
+    "retriever_call_count": 1,
+    "first_prompt_contains_canary": true,
+    "second_prompt_contains_canary": false,
+    "consumed": true,
+    "first_prompt_sha256": "38bb73ff793e746fc4ba32365c8d72107667401e4a6f148b126dd3f77f0b22dd"
+  },
+  "private_fixture_validator": {
+    "admit_decision": "admit",
+    "admit_source": "non_default_private_fixture_stub",
+    "admit_tool": "mnemos_ro_private_fixture_hypomnema_search",
+    "reject_live_db_decision": "reject",
+    "reject_live_db_reason_codes": ["R_LIVE_DB_FORBIDDEN", "R_FAIL_CLOSED"]
+  },
+  "tests": {
+    "command": "python3 -m pytest tests/agent/test_memory_provider_selection.py tests/agent/test_mnemos_prompt_canary.py tests/agent/test_mnemos_prompt_integration.py tests/agent/test_mnemos_one_session_smoke.py tests/agent/test_mnemos_private_fixture_validator.py -q -o 'addopts='",
+    "result": "38 passed, 1 warning in 2.85s"
+  },
+  "side_effects": {
+    "config_changed": false,
+    "source_changed": false,
+    "service_restarted": false,
+    "mnemos_live_db_accessed": false,
+    "mnemos_writes_enabled": false,
+    "secrets_read": false,
+    "artifacts_written": [
+      "reports/mnemos-continuity/20260527T230300Z-mnemos-next-rung-readonly/report.md",
+      "reports/mnemos-continuity/20260527T230300Z-mnemos-next-rung-readonly/manifest.json"
+    ]
+  },
+  "next_safe_rung": "private fixture MCP design/report-only, then stopped non-default profile smoke before any prompt-visible expansion"
+}
