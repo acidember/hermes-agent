@@ -1,0 +1,62 @@
+{
+  "rung": "live-memory-mesh-mnemos-synthetic-activation",
+  "status": "PASS_WITH_CAVEATS",
+  "timestamp_utc": "20260527T224500Z",
+  "changed": {
+    "default_profile_config": true,
+    "source_code": false,
+    "gateway_restarted": true
+  },
+  "memory": {
+    "provider": "honcho",
+    "providers": ["enzyme", "holographic"],
+    "multi_provider_enabled": true,
+    "resolved": ["honcho", "enzyme", "holographic"],
+    "agent_init_smoke_providers": ["honcho", "enzyme", "holographic"]
+  },
+  "mnemos_prompt_admission": {
+    "status": "armed_synthetic_canary",
+    "source": "synthetic_shadow_sqlite",
+    "allow_live_db": false,
+    "allow_writes": false,
+    "telemetry_only": true,
+    "require_low_trust": true,
+    "prompt_injection_possible": true,
+    "live_private_db_admitted": false
+  },
+  "gateway": {
+    "active_state": "active",
+    "sub_state": "running",
+    "main_pid": 2176041,
+    "exec_main_start_timestamp": "Wed 2026-05-27 15:40:57 PDT",
+    "cwd": "/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z",
+    "post_restart_markers": [
+      "Telegram connected",
+      "Discord connected as Kai- Hermes#0838",
+      "Gateway running with 3 platform(s)",
+      "Cron ticker started"
+    ]
+  },
+  "verification": {
+    "mcp_test": "PASS: mnemos_ro_default_canary connected, 1 tool discovered",
+    "runtime_smoke": "PASS: AIAgent loaded honcho/enzyme/holographic and admitted low-trust synthetic Mnemos volatile packet",
+    "pytest": "22 passed, 1 warning",
+    "py_compile": "PASS"
+  },
+  "rollback": {
+    "config_backup_local_untracked": "reports/mnemos-continuity/activation-backups/config.yaml.before-memory-mesh-20260527T223826Z",
+    "command": "cp /home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/activation-backups/config.yaml.before-memory-mesh-20260527T223826Z /home/ember/.hermes/config.yaml && systemctl --user restart hermes-gateway"
+  },
+  "negative_space": {
+    "source_code_changes": false,
+    "secret_values_printed": false,
+    "mnemos_live_db_access": false,
+    "mnemos_writes": false,
+    "destructive_cleanup": false,
+    "cron_provider_model_changes": false
+  },
+  "artifacts": [
+    "reports/mnemos-continuity/20260527T224500Z-live-memory-mesh-mnemos-activation/report.md",
+    "reports/mnemos-continuity/20260527T224500Z-live-memory-mesh-mnemos-activation/manifest.json"
+  ]
+}
