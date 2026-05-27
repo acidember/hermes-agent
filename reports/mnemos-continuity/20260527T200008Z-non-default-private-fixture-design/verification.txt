@@ -1,0 +1,14 @@
+--- files ---
+/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/20260527T200008Z-non-default-private-fixture-design/design.md
+/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/20260527T200008Z-non-default-private-fixture-design/manifest.json
+/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/20260527T200008Z-non-default-private-fixture-design/negative-space.md
+/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/20260527T200008Z-non-default-private-fixture-design/report.md
+/home/ember/hermes-agent-src/.worktrees/mnemos-gate-refresh-origin-main-20260527T191822Z/reports/mnemos-continuity/20260527T200008Z-non-default-private-fixture-design/verification.txt
+--- nonempty ---
+nonempty design.md
+nonempty manifest.json
+nonempty negative-space.md
+nonempty report.md
+nonempty verification.txt
+--- forbidden private/raw markers ---
+no forbidden marker found

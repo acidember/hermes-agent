@@ -1,0 +1,34 @@
+{
+  "rung": "non-default-private-fixture-design-only",
+  "observed_at_utc": "2026-05-27T20:00:26Z",
+  "head": "16f66ba54ae0c76c95c71954b7b704d727592059",
+  "branch": "work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "design_only": true,
+  "fixture_created": false,
+  "db_created": false,
+  "profile_created": false,
+  "live_private_memory_read": false,
+  "memory_written": false,
+  "provider_promoted": false,
+  "gateway_restarted": false,
+  "future_candidate_source": "non_default_private_fixture_stub",
+  "future_candidate_tool": "mnemos_ro_private_fixture_hypomnema_search",
+  "future_required_flags": {
+    "read_only": true,
+    "low_trust": true,
+    "private_fixture": true,
+    "allow_live_db": false,
+    "allow_writes": false,
+    "one_session_consumption": true,
+    "metadata_only_telemetry": true
+  },
+  "next_safe_rung": "tests-only private fixture response validator helper; no profile/db/config/runtime changes",
+  "stop_signs": [
+    "profile_or_db_creation",
+    "copy_or_import_live_private_memory",
+    "default_profile_config_edit",
+    "provider_promotion",
+    "gateway_restart_for_private_fixture",
+    "write_tools"
+  ]
+}
