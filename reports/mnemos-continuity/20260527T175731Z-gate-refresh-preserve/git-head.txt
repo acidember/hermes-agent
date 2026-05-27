@@ -1,0 +1,7 @@
+2a8d21741
+main
+2a8d21741 (HEAD -> main) chore(release): map carltonawong noreply to GitHub login
+43a3f119f fix(agent): recover Codex streams with null output
+bb4703c76 docs(auth): replace stale 'hermes login' references with 'hermes auth add'
+f05a47309 fix(gateway): refresh cached agent tools on /reload-mcp
+556bf7c5c test(cron): guard schedule-required description text on CRONJOB_SCHEMA
