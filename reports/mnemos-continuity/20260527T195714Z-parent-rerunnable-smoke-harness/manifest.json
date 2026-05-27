@@ -1,0 +1,29 @@
+{
+  "rung": "parent-rerunnable-one-session-smoke-harness",
+  "observed_at_utc": "2026-05-27T19:58:09Z",
+  "head": "1bd68820c5021b029f05a378d32095d9ea76d478",
+  "changed_files": [
+    "agent/mnemos_one_session_smoke.py",
+    "reports/mnemos-continuity/20260527T195714Z-parent-rerunnable-smoke-harness/git-name-status.txt",
+    "reports/mnemos-continuity/20260527T195714Z-parent-rerunnable-smoke-harness/git-status.txt",
+    "reports/mnemos-continuity/20260527T195714Z-parent-rerunnable-smoke-harness/harness-sample.txt",
+    "reports/mnemos-continuity/20260527T195714Z-parent-rerunnable-smoke-harness/secret-sweep.json",
+    "reports/mnemos-continuity/20260527T195714Z-parent-rerunnable-smoke-harness/verification.txt",
+    "tests/agent/test_mnemos_one_session_smoke.py"
+  ],
+  "verification": {
+    "targeted_tests": "41 passed, 1 warning",
+    "secret_sweep": "0 secrets found",
+    "live_synthetic_mcp": "ok true, low_trust true, source synthetic_shadow_sqlite"
+  },
+  "rails": {
+    "side_effect_free": true,
+    "reads_config": false,
+    "discovers_tools": false,
+    "opens_db": false,
+    "writes_memory": false,
+    "provider_promotion": false,
+    "gateway_restart": false
+  },
+  "next_ladder_rung": "non-default private fixture design doc only, or commit/push this helper first"
+}
