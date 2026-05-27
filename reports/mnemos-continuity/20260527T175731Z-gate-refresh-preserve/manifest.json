@@ -1,0 +1,94 @@
+{
+  "classification": "synthetic default-profile canary; not live/private Mnemos memory",
+  "generated_at_utc": "2026-05-27T17:59:05.991514+00:00",
+  "implemented_files": [
+    "agent/mnemos_prompt_canary.py",
+    "agent/system_prompt.py",
+    "agent/agent_init.py",
+    "tests/agent/test_mnemos_prompt_canary.py",
+    "tests/agent/test_mnemos_prompt_integration.py",
+    "agent/mnemos_admission.py",
+    "tests/agent/test_mnemos_admission.py"
+  ],
+  "implemented_safe_rungs": [
+    "pure metadata-only gate refresh helper",
+    "sanitized last-packet metadata for one-session smoke evidence without raw prompt text"
+  ],
+  "next_safe_handle": "YES MNEMOS NEXT DESIGN",
+  "preserved_inputs": {
+    "config_gate_refresh_path": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/config-gate-refresh.txt",
+    "git_name_status_path": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/git-name-status.txt",
+    "git_stat_path": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/git-stat.txt",
+    "git_status_final_path": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/git-status.final.txt",
+    "git_status_path": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/git-status.txt",
+    "head_path": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/git-head.txt",
+    "source_patch_path": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/gate-refresh-source.patch",
+    "source_patch_path_note": "gate-refresh-source.patch is empty because the Mnemos files are currently untracked; source-snapshot files are the authoritative preservation artifact for this rung.",
+    "source_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_snapshot_dir": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/source-snapshot",
+    "source_snapshot_files": [
+      {
+        "bytes": 11971,
+        "path": "agent/mnemos_prompt_canary.py",
+        "sha256": "893930d314bea7e5d736fd305696f099382230a41b3b69a4e81edfdbb6dc72e5",
+        "snapshot": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/source-snapshot/agent__mnemos_prompt_canary.py"
+      },
+      {
+        "bytes": 19644,
+        "path": "agent/system_prompt.py",
+        "sha256": "83c39a6805b2bff203971cbc8f58d3ee937d9be41827856217ba4d391affac55",
+        "snapshot": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/source-snapshot/agent__system_prompt.py"
+      },
+      {
+        "bytes": 87754,
+        "path": "agent/agent_init.py",
+        "sha256": "b645915bddd65722c0a5ff59939f85313571c1698340ff1bcf9bad88a3b51263",
+        "snapshot": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/source-snapshot/agent__agent_init.py"
+      },
+      {
+        "bytes": 11677,
+        "path": "tests/agent/test_mnemos_prompt_canary.py",
+        "sha256": "e16e900faa31dd173aa7784f40f237bf5381dc05f35f5a6ed48ec5df3cbfe4a9",
+        "snapshot": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/source-snapshot/tests__agent__test_mnemos_prompt_canary.py"
+      },
+      {
+        "bytes": 8579,
+        "path": "tests/agent/test_mnemos_prompt_integration.py",
+        "sha256": "18f36d1cb3e9902424f774585204bdd9ea18e1c994db0965075ad47f98fa4842",
+        "snapshot": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/source-snapshot/tests__agent__test_mnemos_prompt_integration.py"
+      },
+      {
+        "bytes": 14793,
+        "path": "agent/mnemos_admission.py",
+        "sha256": "094a9e5ccc5591efe24df483657b865280205a56fb300d21b705f40ebd66b058",
+        "snapshot": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/source-snapshot/agent__mnemos_admission.py"
+      },
+      {
+        "bytes": 4472,
+        "path": "tests/agent/test_mnemos_admission.py",
+        "sha256": "04f7bbddc9de7d69a00a41fef0e2b5a2fbfc79cb7851fdd7623a86aa2a12d56e",
+        "snapshot": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve/source-snapshot/tests__agent__test_mnemos_admission.py"
+      }
+    ]
+  },
+  "rails": {
+    "no_config_or_env_change_in_this_rung": true,
+    "no_gateway_restart_in_this_rung": true,
+    "no_live_mnemos_or_kai_db": true,
+    "no_memory_provider_promotion": true,
+    "retrieval_content_low_trust_synthetic_only": true,
+    "source_changes_tests_only_and_metadata_only": true
+  },
+  "report_root": "/home/ember/hermes-agent-src/reports/mnemos-continuity/20260527T175731Z-gate-refresh-preserve",
+  "rollback": {
+    "config": "cp /home/ember/hermes-agent-src/reports/mnemos-continuity/activation-backups/config.yaml.before-prompt-admission-20260527T165204Z /home/ember/.hermes/config.yaml",
+    "source_patch": "git checkout -- agent/mnemos_prompt_canary.py tests/agent/test_mnemos_prompt_canary.py"
+  },
+  "rung": "mnemos prompt-admission gate refresh + preservation bundle",
+  "verification": {
+    "artifact": "verification.md",
+    "py_compile": "PASS",
+    "targeted_pytest": "70 passed"
+  },
+  "verified_at_utc": "2026-05-27T18:02:01.764615+00:00"
+}
