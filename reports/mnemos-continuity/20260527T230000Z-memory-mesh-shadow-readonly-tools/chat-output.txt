@@ -1,0 +1,1 @@
+{"called_readonly_tools":["enzyme_search","honcho_profile"],"forbidden_tools_called":[],"enzyme_result_shape":"0 results","honcho_result_shape":"no profile facts available; hint present","notes":"Read-only smoke completed without writes or forbidden tool calls."}

@@ -1,0 +1,3 @@
+/home/ember/.hermes/profiles/mnemos-shadow-ro/enzyme-vault/.enzyme/enzyme.db 147456
+/home/ember/.hermes/profiles/mnemos-shadow-ro/holographic/memory_store.db 65536
+/home/ember/.hermes/profiles/mnemos-shadow-ro/state.db 147456

@@ -1,0 +1,23 @@
+=== preflight ===
+2026-05-27T22:19:18Z
+=== git ===
+## work/mnemos-gate-refresh-origin-main-20260527T191822Z...acidember/work/mnemos-gate-refresh-origin-main-20260527T191822Z
+?? reports/mnemos-continuity/20260527T230000Z-memory-mesh-shadow-readonly-tools/
+3c612ca043b423a3f489af8c54fb452757b2efda
+=== default and shadow config summary ===
+default.memory.provider= honcho
+default.memory.providers= ['enzyme', 'holographic']
+default.memory.multi_provider_enabled= None
+default.resolved= ['honcho']
+default.mnemos.source= synthetic_shadow_sqlite
+default.mnemos.allow_live_db= False
+default.mnemos.allow_writes= False
+shadow.profile= {'name': 'mnemos-shadow-ro', 'enabled': False, 'state': 'stopped', 'default_profile': False, 'dispatching': False, 'activation_performed': False}
+shadow.gateway= {'media_delivery_allow_dirs': [], 'trust_recent_files': True, 'trust_recent_files_seconds': 600, 'enabled': False}
+shadow.cron= {'wrap_response': True, 'max_parallel_jobs': None, 'enabled': False, 'jobs_enabled': False}
+shadow.memory= {'memory_enabled': True, 'user_profile_enabled': False, 'memory_char_limit': 2200, 'user_char_limit': 1375, 'provider': 'honcho', 'providers': ['enzyme', 'holographic'], 'multi_provider_enabled': True}
+shadow.resolved= ['honcho', 'enzyme', 'holographic']
+=== gateway ===
+ExecMainStartTimestamp=Wed 2026-05-27 12:42:42 PDT
+ActiveState=active
+SubState=running

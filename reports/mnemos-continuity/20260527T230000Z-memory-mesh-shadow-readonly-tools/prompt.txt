@@ -1,0 +1,15 @@
+You are running a bounded shadow-profile memory mesh read-only tool-call smoke.
+
+You MAY call exactly these read-only tools, at most once each:
+1. enzyme_search with query "shadow Enzyme smoke vault" and a small limit/max_results if supported.
+2. honcho_profile with peer "shadow-smoke-readonly-probe-20260527" and no card/update field.
+
+You MUST NOT call: fact_store, fact_feedback, honcho_conclude, or any write/update/store/delete tool.
+You MUST NOT quote raw Honcho memory content. You MUST NOT store memory. You MUST NOT modify files.
+
+After the tool calls, reply in compact JSON only with keys:
+- called_readonly_tools: list of tool names you called
+- forbidden_tools_called: list
+- enzyme_result_shape: short shape/count/status only, no raw content
+- honcho_result_shape: short shape/status only, no raw profile facts
+- notes: one sentence

@@ -1,0 +1,8 @@
+2026-05-27 15:19:49,421 INFO [20260527_151948_7e7e31] agent.conversation_loop: conversation turn: session=20260527_151948_7e7e31 model=gpt-5.5 provider=openai-codex platform=cli history=0 msg='You are running a bounded shadow-profile memory mesh read-only tool-call smoke. ...'
+2026-05-27 15:19:52,798 INFO [20260527_151948_7e7e31] agent.conversation_loop: API call #1: model=gpt-5.5 provider=openai-codex in=3523 out=115 total=3638 latency=3.4s
+2026-05-27 15:19:52,827 INFO [20260527_151948_7e7e31] agent.tool_executor: tool enzyme_search completed (0.02s, 27 chars)
+2026-05-27 15:19:53,876 INFO [20260527_151948_7e7e31] plugins.memory.honcho.client: Initializing Honcho client (host: hermes.mnemos-shadow-ro, workspace: hermes-shadow-smoke)
+2026-05-27 15:19:56,934 INFO [20260527_151948_7e7e31] plugins.memory.honcho.session: Honcho session 'mnemos-gate-refresh-origin-main-20260527T191822Z' created (new)
+2026-05-27 15:19:58,285 INFO [20260527_151948_7e7e31] agent.tool_executor: tool honcho_profile completed (4.46s, 319 chars)
+2026-05-27 15:20:00,543 INFO [20260527_151948_7e7e31] agent.conversation_loop: API call #2: model=gpt-5.5 provider=openai-codex in=3751 out=58 total=3809 latency=2.3s cache=3072/3751 (82%)
+2026-05-27 15:20:00,556 INFO [20260527_151948_7e7e31] agent.conversation_loop: Turn ended: reason=text_response(finish_reason=stop) model=gpt-5.5 api_calls=2/5 budget=2/5 tool_turns=1 last_msg_role=assistant response_len=263 session=20260527_151948_7e7e31

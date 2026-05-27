@@ -1,0 +1,47 @@
+{
+  "session_id": "20260527_151948_7e7e31",
+  "assistant_tool_calls": [
+    {
+      "name": "enzyme_search",
+      "arguments": "{\"query\":\"shadow Enzyme smoke vault\",\"max_results\":3}"
+    },
+    {
+      "name": "honcho_profile",
+      "arguments": "{\"peer\":\"shadow-smoke-readonly-probe-20260527\"}"
+    }
+  ],
+  "tool_result_names": [
+    "enzyme_search",
+    "honcho_profile"
+  ],
+  "tool_result_shapes": [
+    {
+      "tool_name": "enzyme_search",
+      "chars": 27,
+      "keys": [
+        "count",
+        "results"
+      ],
+      "count": 0,
+      "results_len": 0
+    },
+    {
+      "tool_name": "honcho_profile",
+      "chars": 319,
+      "keys": [
+        "hint",
+        "result"
+      ],
+      "hint_present": true,
+      "result_summary": "present"
+    }
+  ],
+  "allowed_called_exactly": [
+    "enzyme_search",
+    "honcho_profile"
+  ],
+  "forbidden_called": [],
+  "unexpected_called": [],
+  "pass": true,
+  "note": "Honcho profile read lazily created/opened a Honcho session per agent log; no write-like tools were called."
+}

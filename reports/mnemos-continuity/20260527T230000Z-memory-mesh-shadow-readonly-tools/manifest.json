@@ -1,0 +1,56 @@
+{
+  "timestamp_utc": "2026-05-27T23:00:00Z",
+  "rung": "memory_mesh_shadow_readonly_tool_calls",
+  "status": "passed_with_honcho_session_touch_caveat",
+  "branch": "work/mnemos-gate-refresh-origin-main-20260527T191822Z",
+  "profile": "mnemos-shadow-ro",
+  "session_id": "20260527_151948_7e7e31",
+  "allowed_tool_calls": ["enzyme_search", "honcho_profile"],
+  "actual_tool_calls": [
+    {
+      "name": "enzyme_search",
+      "arguments_shape": {"query": "shadow Enzyme smoke vault", "max_results": 3},
+      "result_shape": {"count": 0, "results_len": 0}
+    },
+    {
+      "name": "honcho_profile",
+      "arguments_shape": {"peer": "shadow-smoke-readonly-probe-20260527"},
+      "result_shape": {"keys": ["hint", "result"], "hint_present": true, "profile_facts": "none"}
+    }
+  ],
+  "forbidden_tool_calls": [],
+  "unexpected_tool_calls": [],
+  "honcho_caveat": "honcho_profile is read-like but lazily initialized/opened a Honcho session for the shadow host; no honcho_conclude or write-like tool was called",
+  "verification_files": [
+    "tool-call-verification.json",
+    "state-db-inspect.txt",
+    "agent-log-session-extract.txt",
+    "post-hashes.json",
+    "gateway-post.txt",
+    "targeted-tests.txt"
+  ],
+  "verification": {
+    "chat_exit_code": 0,
+    "state_db_tool_call_verification_pass": true,
+    "default_config_hash_unchanged": true,
+    "shadow_config_hash_unchanged": true,
+    "shadow_honcho_json_hash_unchanged": true,
+    "shadow_enzyme_readme_hash_unchanged": true,
+    "gateway_restarted": false,
+    "targeted_tests": "7 passed",
+    "git_diff_check": "passed"
+  },
+  "negative_space": {
+    "default_config_edited": false,
+    "default_gateway_restarted": false,
+    "default_profile_memory_mesh_enabled": false,
+    "shadow_config_changed_during_chat": false,
+    "fact_store_called": false,
+    "fact_feedback_called": false,
+    "honcho_conclude_called": false,
+    "mnemos_live_prompt_admission": false,
+    "persistent_provider_or_model_config_changed": false,
+    "cron_changed": false
+  },
+  "next_approval_handle": "YES MEMORY MESH SHADOW INDEXED ENZYME FIXTURE — PROFILE LOCAL ONLY"
+}

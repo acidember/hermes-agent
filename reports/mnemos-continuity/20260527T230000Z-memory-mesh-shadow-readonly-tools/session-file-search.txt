@@ -1,0 +1,4 @@
+/home/ember/.hermes/profiles/mnemos-shadow-ro/state.db-wal 387312
+/home/ember/.hermes/profiles/mnemos-shadow-ro/logs/agent.log 14132
+/home/ember/.hermes/profiles/mnemos-shadow-ro/state.db-wal 387312
+/home/ember/.hermes/profiles/mnemos-shadow-ro/logs/agent.log 14132
